@@ -7,16 +7,31 @@ export default class FetchedMovies extends React.Component {
         this.state = { isLoading: true }
     }
 
-    componentDidMount() {
-        return fetch('https://facebook.github.io/react-native/movies.json')
-            .then(response => response.json())
-            .then(responseJson => {
-                this.setState({
+    // componentDidMount() {
+    //     return fetch('https://facebook.github.io/react-native/movies.json')
+    //         .then(response => response.json())
+    //         .then(responseJson => {
+    //             this.setState({
+    //                 isLoading: false,
+    //                 dataSource: responseJson.movies
+    //             })
+    //         })
+    //         .catch(error => console.error(error))
+
+    // }
+    async componentDidMount() {
+        try {
+            let response = await fetch('http://cities.jonkri.se')
+            let responseJson = await response.json()
+            this.setState({
                     isLoading: false,
-                    dataSource: responseJson.movies
+                    dataSource: responseJson
                 })
-            })
-            .catch(error => console.error(error))
+        } catch (error) {
+            console.log('====================================');
+            console.log(error);
+            console.log('====================================');
+        }
 
     }
     render() {
@@ -29,10 +44,10 @@ export default class FetchedMovies extends React.Component {
         }
 
         return (
-            <View style={{flex: 1, paddingTop:20}}>
+            <View style={{flex: 1, paddingTop:20, width: '100%'}}>
                 <FlatList
                     data={this.state.dataSource}
-                    renderItem={({item}) => <Text>{item.title}, {item.releaseYear}</Text>}
+                    renderItem={({item}) => <Text style={{ padding:20, fontSize: 26}}>{item.name}, {item.population} </Text>}
                     keyExtractor={(item, index) => item + index}
                 />
             </View>

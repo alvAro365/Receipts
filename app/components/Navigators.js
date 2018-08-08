@@ -9,8 +9,8 @@ import SettingsScreen from '../views/SettingsScreen'
 import { Ionicons } from '@expo/vector-icons'
 
 const HomeStack = createStackNavigator(
-  {
-    Home: {
+    {
+        Home: {
       screen: HomeScreen,
     },
     Details: {
@@ -30,27 +30,28 @@ const HomeStack = createStackNavigator(
     }
   })
 
-const SettingsStack = createStackNavigator({ 
-    Settings: { 
-        screen: SettingsScreen 
+const SettingsStack = createStackNavigator(
+    { 
+        Settings: { 
+            screen: SettingsScreen 
+        }, 
+        Details: {
+            screen: DetailsScreen 
+        },
     }, 
-    Details: { 
-        screen: DetailsScreen 
-    },
-},
-{
-    navigationOptions: {
-          headerStyle: {
-              backgroundColor: 'steelblue'
-          },
-          headerTintColor: '#fff',
-          headerTitleStyle: {
-              fontWeight: 'bold',
-          }
-    }
-}
-)
-export const TabNavigator = createBottomTabNavigator({
+    { 
+        navigationOptions: { 
+            headerStyle: {
+                 backgroundColor: "steelblue" 
+                }, 
+                headerTintColor: '#fff',
+                headerTitleStyle: { 
+                    fontWeight: 'bold' 
+                } 
+            }
+        }) 
+
+const TabNavigator = createBottomTabNavigator({
     Home: {
         screen: HomeStack
     },

@@ -13,9 +13,9 @@ import ScrollerView from '../components/Scroller'
 import List from '../components/List'
 import FetchedMovies from '../components/FetchedMovies'
 import ImageTitle from '../components/ImageTitle';
-import { Icon } from '@expo/vector-icons'
+import { Icon, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'
 import HeaderButtons, { HeaderButton } from 'react-navigation-header-buttons';
-import Ionicons from '@expo/vector-icons/Ionicons';
+
 
 const IoniconsHeaderButton = (props) => (
         <HeaderButton {...props} IconComponent={Ionicons} iconSize={23} color="#fff" />
@@ -27,7 +27,7 @@ export default class HomeScreen extends React.Component {
         const params = navigation.state.param || {}
 
         return {
-            headerTitle: <ImageTitle />,
+            headerTitle: <MaterialCommunityIcons name="city" size={40} color="#fff" />,
             headerRight: (
                 <HeaderButtons HeaderButtonComponent={IoniconsHeaderButton}>}>
                     <HeaderButtons.Item title="search" iconName="ios-information-circle-outline" onPress={() => navigation.navigate('MyModal')}/>
@@ -51,7 +51,7 @@ export default class HomeScreen extends React.Component {
     render() {
         return (
             <View style={styles.container}>
-                <Text>Home Screen</Text>
+                <FetchedMovies />
                 <Button 
                     title="Go to Details"
                     onPress={() => this.props.navigation.navigate('Details', {
