@@ -19,7 +19,12 @@ export default class FetchedMovies extends React.Component {
     //         .catch(error => console.error(error))
 
     // }
-    async componentDidMount() {
+    componentDidMount() {
+        this.fetchData()
+
+    }
+
+    async fetchData() {
         try {
             let response = await fetch('http://cities.jonkri.se')
             let responseJson = await response.json()
@@ -34,6 +39,16 @@ export default class FetchedMovies extends React.Component {
         }
 
     }
+
+    onRefresh() {
+        console.log('Refreshing');
+        
+        this.setState({
+            isLoading: true
+        }, () => (
+            this.fetchData()
+        ))
+    }
     render() {
         if(this.state.isLoading) {
             return(
@@ -46,6 +61,8 @@ export default class FetchedMovies extends React.Component {
         return (
             <View style={{flex: 1, paddingTop:20, width: '100%'}}>
                 <FlatList
+                    onRefresh={()=>this.onRefresh()}
+                    refreshing={this.state.isLoading}
                     data={this.state.dataSource}
                     renderItem={({item}) => <Text style={{ padding:20, fontSize: 26}}>{item.name}, {item.population} </Text>}
                     keyExtractor={(item, index) => item + index}
