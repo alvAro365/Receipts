@@ -1,5 +1,5 @@
 import React from 'react'
-import { FlatList, ActivityIndicator, Text, View } from 'react-native'
+import { FlatList, ActivityIndicator, Text, TouchableHighlight, TouchableOpacity, View } from 'react-native'
 
 export default class FetchedMovies extends React.Component {
     constructor(props) {
@@ -49,6 +49,12 @@ export default class FetchedMovies extends React.Component {
             this.fetchData()
         ))
     }
+    _onPress(name) {
+        console.log('====================================');
+        console.log(name);
+        console.log('====================================');
+    }
+    
     render() {
         if(this.state.isLoading) {
             return(
@@ -64,7 +70,13 @@ export default class FetchedMovies extends React.Component {
                     onRefresh={()=>this.onRefresh()}
                     refreshing={this.state.isLoading}
                     data={this.state.dataSource}
-                    renderItem={({item}) => <Text style={{ padding:20, fontSize: 26}}>{item.name}, {item.population} </Text>}
+                    renderItem={({item}) => ( 
+                        <TouchableOpacity onPress={() => this._onPress(item.name)}>
+                            <View>
+                                <Text style={{ padding:20, fontSize: 26}}>{item.name}, {item.population} </Text>
+                            </View>
+                        </TouchableOpacity>
+                    )}
                     keyExtractor={(item, index) => item + index}
                 />
             </View>
