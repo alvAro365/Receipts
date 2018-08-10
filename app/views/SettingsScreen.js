@@ -17,10 +17,10 @@ class SettingsScreen extends Component {
     render() {
         return (
            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <Text style={{ fontSize: 30}}>Settings!</Text>
+            {/* <Text style={{ fontSize: 30}}>Settings!</Text> */}
             <Button 
-                onPress={() => this.props.navigation.navigate('Home')}
-                title="Go to Home"
+                onPress={() => this.props.navigation.navigate('Cities')}
+                title="Go to Cities"
             />
            </View> 
         );

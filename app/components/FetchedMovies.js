@@ -1,5 +1,7 @@
 import React from 'react'
 import { FlatList, ActivityIndicator, Text, TouchableHighlight, TouchableOpacity, View } from 'react-native'
+import Swipeout from 'react-native-swipeout';
+import { ListItem } from 'react-native-elements';
 
 export default class FetchedMovies extends React.Component {
     constructor(props) {
@@ -49,10 +51,13 @@ export default class FetchedMovies extends React.Component {
             this.fetchData()
         ))
     }
-    _onPress(name) {
+    _onPress(item) {
         console.log('====================================');
-        console.log(name);
+        console.log(item.name);
         console.log('====================================');
+        this.props.navigation.navigate('Details')
+
+
     }
     
     render() {
@@ -65,17 +70,34 @@ export default class FetchedMovies extends React.Component {
         }
 
         return (
-            <View style={{flex: 1, paddingTop:20, width: '100%'}}>
+            <View style={{flex: 1, paddingTop:0, width: '100%'}}>
                 <FlatList
+                    ItemSeparatorComponent={() => (
+                        <View style={{
+                            height: 1,
+                            backgroundColor: "#CED0CE"
+                        }} />
+                    )
+                    }
                     onRefresh={()=>this.onRefresh()}
                     refreshing={this.state.isLoading}
                     data={this.state.dataSource}
-                    renderItem={({item}) => ( 
-                        <TouchableOpacity onPress={() => this._onPress(item.name)}>
-                            <View>
-                                <Text style={{ padding:20, fontSize: 26}}>{item.name}, {item.population} </Text>
-                            </View>
-                        </TouchableOpacity>
+                    renderItem={({item}) => (
+                        <Swipeout autoClose right={[
+                             { text: 'Edit', type: 'primary'},
+                             { text: 'Delete', type: 'delete', onPress: () => console.log('Delete')}
+                             ]}
+                        > 
+                            <TouchableHighlight onPress={() => this._onPress(item)} underlayColor="lightgray">
+                            <ListItem 
+                                title={item.name}
+                                subtitle={<Text style={{color: 'gray'}}>Population: {item.population}</Text>}
+                            />
+                                {/* <View>
+                                    <Text style={{ padding:20, fontSize: 26}}>{item.name}, {item.population} </Text>
+                                </View> */}
+                            </TouchableHighlight>
+                        </Swipeout>
                     )}
                     keyExtractor={(item, index) => item + index}
                 />

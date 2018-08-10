@@ -6,11 +6,11 @@ import DetailsScreen from '../views/DetailsScreen'
 import InfoScreen from '../views/InfoScreen'
 import SettingsScreen from '../views/SettingsScreen'
 
-import { Ionicons } from '@expo/vector-icons'
+import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'
 
 const HomeStack = createStackNavigator(
     {
-        Home: {
+        Cities: {
       screen: HomeScreen,
     },
     Details: {
@@ -21,9 +21,9 @@ const HomeStack = createStackNavigator(
     // initialRouteName:'Home',
     navigationOptions: {
           headerStyle: {
-              backgroundColor: 'steelblue'
+            //   backgroundColor: 'steelblue'
           },
-          headerTintColor: '#fff',
+        //   headerTintColor: '#fff',
           headerTitleStyle: {
               fontWeight: 'bold',
           }
@@ -42,9 +42,9 @@ const SettingsStack = createStackNavigator(
     { 
         navigationOptions: { 
             headerStyle: {
-                 backgroundColor: "steelblue" 
+                //  backgroundColor: "steelblue" 
                 }, 
-                headerTintColor: '#fff',
+                // headerTintColor: '#fff',
                 headerTitleStyle: { 
                     fontWeight: 'bold' 
                 } 
@@ -52,7 +52,7 @@ const SettingsStack = createStackNavigator(
         }) 
 
 const TabNavigator = createBottomTabNavigator({
-    Home: {
+    Cities: {
         screen: HomeStack
     },
     Settings: {
@@ -60,7 +60,7 @@ const TabNavigator = createBottomTabNavigator({
     }
 }, 
 { 
-    initialRouteName: 'Home',
+    initialRouteName: 'Cities',
     navigationOptions: ({navigation}) => (
         { 
             tabBarVisible: navigation.state.index === 0,
@@ -70,14 +70,16 @@ const TabNavigator = createBottomTabNavigator({
             tabBarIcon: ({ focused, tintColor }) => {
                 const { routeName } = navigation.state
                 let iconName
-                if (routeName === 'Home') {
+                if (routeName === 'Cities') {
                     
-                    iconName = `ios-home${focused ? '' : '-outline'}`
+                    // iconName = `ios-home${focused ? '' : '-outline'}`
+                    iconName = "city"
+                    return <MaterialCommunityIcons name={iconName} size={25} color={tintColor} />
                 } else if (routeName === 'Settings') {
                     iconName = `ios-settings${focused ? '' : '-outline'}`
+                    return <Ionicons name={iconName} size={25} color={tintColor} />
                 }
 
-                return <Ionicons name={iconName} size={25} color={tintColor} />
             }
 
         }

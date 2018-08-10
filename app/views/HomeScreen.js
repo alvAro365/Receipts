@@ -18,7 +18,7 @@ import HeaderButtons, { HeaderButton } from 'react-navigation-header-buttons';
 
 
 const IoniconsHeaderButton = (props) => (
-        <HeaderButton {...props} IconComponent={Ionicons} iconSize={23} color="#fff" />
+        <HeaderButton {...props} IconComponent={Ionicons} iconSize={23} />
 
 )
 
@@ -27,7 +27,8 @@ export default class HomeScreen extends React.Component {
         const params = navigation.state.param || {}
 
         return {
-            headerTitle: <MaterialCommunityIcons name="city" size={40} color="#fff" />,
+            // headerTitle: <MaterialCommunityIcons name="city" size={40} color="#fff" />,
+            title: 'Cities',
             headerRight: (
                 <HeaderButtons HeaderButtonComponent={IoniconsHeaderButton}>}>
                     <HeaderButtons.Item title="search" iconName="ios-information-circle-outline" onPress={() => navigation.navigate('MyModal')}/>
@@ -51,14 +52,14 @@ export default class HomeScreen extends React.Component {
     render() {
         return (
             <View style={styles.container}>
-                <FetchedMovies />
-                <Button 
+                <FetchedMovies navigation={this.props.navigation} />
+                {/* <Button 
                     title="Go to Details"
                     onPress={() => this.props.navigation.navigate('Details', {
                         itemId: 88,
                         otherParam: 'anything here'
                     })}
-                />
+                / */}
                 { 
                  /*
                 <FetchedMovies />
