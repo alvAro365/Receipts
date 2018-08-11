@@ -80,15 +80,15 @@ export default class FetchedMovies extends React.Component {
     }
 
     renderItem(item, index) {
-        console.log('====================================');
-        console.log(`Item: ${item.name}, Index: ${index}`);
-        console.log('====================================');
+        // console.log('====================================');
+        // console.log(`Item: ${item.name}, Index: ${index}`);
+        // console.log('====================================');
         return (
             <Swipeout autoClose
                     close={item.id !== this.state.activeRow}
                     right={[
-                    { text: 'Edit', type: 'primary'},
-                    { text: 'Delete', type: 'delete', onPress: () => console.log('Delete')}
+                    { text: 'Edit', type: 'primary', onPress: () => console.log(`Edit item id: ${item.id}`)},
+                    { text: 'Delete', type: 'delete', onPress: () => console.log(`Delete item id: ${item.id}`)}
                     ]}
                     onOpen={(secId, rowId, direction) => this.onSwipeOpen(item)}
                     onClose={(secId, rowId, direction) => this.onSwipeClose(item, rowId, direction)}
