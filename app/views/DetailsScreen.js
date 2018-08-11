@@ -6,38 +6,39 @@ class DetailsScreen extends React.Component {
 
     static navigationOptions = ({ navigation }) => {
         return {
-            title: navigation.getParam('otherParam', 'A nested Details Screen')
+            title: navigation.getParam('title', 'City name')
         }
     }
     
     render() {
         const { navigation } = this.props
-        const itemId = navigation.getParam('itemId', 'NO-ID')
-        const otherParam = navigation.getParam('otherParam', 'some default value')
+        const id = navigation.getParam('id', 'NO-ID')
+        const name = navigation.getParam('title', 'NO-TITLE')
+        const population = navigation.getParam('population', 'NO-POPULATION')
 
         return (
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-                <Text>Details Screen</Text>
-                <Text>itemId: {JSON.stringify(itemId)}</Text>
-                <Text>otherParam: {JSON.stringify(otherParam)}</Text>
-                <Button 
+                {/* <Text>{name}</Text> */}
+                {/* <Text>Id: {JSON.stringify(id)}</Text> */}
+                <Text>Population: {JSON.stringify(population)}</Text>
+                {/* <Button 
                     title="Go to Details... again"
                     onPress={() => this.props.navigation.push('Details', {
                         itemId: Math.floor(Math.random() * 100)
                     })}
-                />
-                <Button 
+                /> */}
+                {/* <Button 
                     title="Go to Home"
-                    onPress={() => this.props.navigation.navigate('Home')}
-                />
-                <Button 
+                    onPress={() => this.props.navigation.navigate('Cities')}
+                /> */}
+                {/* <Button 
                     title="Go back"
                     onPress={() => this.props.navigation.goBack()}
-                />
-                <Button 
+                /> */}
+                {/* <Button 
                     title="Update the title"
                     onPress={() => this.props.navigation.setParams({otherParam: 'Updated'})}
-                />
+                /> */}
             </View>
         );
     }

@@ -2,11 +2,15 @@ import React from 'react'
 import { FlatList, ActivityIndicator, Text, TouchableHighlight, TouchableOpacity, View } from 'react-native'
 import Swipeout from 'react-native-swipeout';
 import { ListItem } from 'react-native-elements';
+import { Icon, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'
 
 export default class FetchedMovies extends React.Component {
     constructor(props) {
         super(props)
-        this.state = { isLoading: true }
+        this.state = { 
+           isLoading: true,
+           activeRow: null
+        }
     }
 
     // componentDidMount() {
@@ -51,14 +55,56 @@ export default class FetchedMovies extends React.Component {
             this.fetchData()
         ))
     }
-    _onPress(item) {
+    onPress(item) {
+        console.log('====================================');
+        console.log('onPress:' + item.name);
+        console.log('====================================');
+        this.props.navigation.navigate('Details', { title: item.name, id: item.id, population: item.population})
+    }
+
+    onSwipeOpen(item) {
         console.log('====================================');
         console.log(item.name);
         console.log('====================================');
-        this.props.navigation.navigate('Details')
-
-
+        this.setState({
+            activeRow: item.id
+        })
     }
+
+    onSwipeClose(item, rowId, direction) {
+        if(item.id === this.state.activeRow && typeof direction !==  'undefined') {
+            this.setState({
+                activeRow: null
+            })
+        }
+    }
+
+    renderItem(item, index) {
+        console.log('====================================');
+        console.log(`Item: ${item.name}, Index: ${index}`);
+        console.log('====================================');
+        return (
+            <Swipeout autoClose
+                    close={item.id !== this.state.activeRow}
+                    right={[
+                    { text: 'Edit', type: 'primary'},
+                    { text: 'Delete', type: 'delete', onPress: () => console.log('Delete')}
+                    ]}
+                    onOpen={(secId, rowId, direction) => this.onSwipeOpen(item)}
+                    onClose={(secId, rowId, direction) => this.onSwipeClose(item, rowId, direction)}
+            > 
+                <TouchableHighlight onPress={() => this.onPress(item)} underlayColor="lightgray">
+                <ListItem 
+                    title={item.name}
+                    subtitle={<Text style={{color: 'gray'}}>Population: {item.population}</Text>}
+                />
+                </TouchableHighlight>
+                    {/* { ((index + 1) == this.state.dataSource.length) && <View>
+                        <ListItem title={<Ionicons name="ios-add-circle-outline" color="blue" size={32} />}/> 
+                    </View> } */}
+            </Swipeout>
+        )
+    } 
     
     render() {
         if(this.state.isLoading) {
@@ -82,25 +128,12 @@ export default class FetchedMovies extends React.Component {
                     onRefresh={()=>this.onRefresh()}
                     refreshing={this.state.isLoading}
                     data={this.state.dataSource}
-                    renderItem={({item}) => (
-                        <Swipeout autoClose right={[
-                             { text: 'Edit', type: 'primary'},
-                             { text: 'Delete', type: 'delete', onPress: () => console.log('Delete')}
-                             ]}
-                        > 
-                            <TouchableHighlight onPress={() => this._onPress(item)} underlayColor="lightgray">
-                            <ListItem 
-                                title={item.name}
-                                subtitle={<Text style={{color: 'gray'}}>Population: {item.population}</Text>}
-                            />
-                                {/* <View>
-                                    <Text style={{ padding:20, fontSize: 26}}>{item.name}, {item.population} </Text>
-                                </View> */}
-                            </TouchableHighlight>
-                        </Swipeout>
+                    renderItem={({item, index}) => (
+                        this.renderItem(item, index)
                     )}
                     keyExtractor={(item, index) => item + index}
                 />
+                {/* <Ionicons name="ios-add-outline" size={33} color="blue" /> */}
             </View>
         )
     }

@@ -18,7 +18,7 @@ import HeaderButtons, { HeaderButton } from 'react-navigation-header-buttons';
 
 
 const IoniconsHeaderButton = (props) => (
-        <HeaderButton {...props} IconComponent={Ionicons} iconSize={23} />
+        <HeaderButton {...props} IconComponent={Ionicons} iconSize={33} />
 
 )
 
@@ -31,7 +31,7 @@ export default class HomeScreen extends React.Component {
             title: 'Cities',
             headerRight: (
                 <HeaderButtons HeaderButtonComponent={IoniconsHeaderButton}>}>
-                    <HeaderButtons.Item title="search" iconName="ios-information-circle-outline" onPress={() => navigation.navigate('MyModal')}/>
+                    <HeaderButtons.Item title="search" iconName="ios-add" color="blue" onPress={() => navigation.navigate('MyModal')}/>
                 </HeaderButtons>
             )
         }
