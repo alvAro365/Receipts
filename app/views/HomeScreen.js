@@ -31,25 +31,43 @@ export default class HomeScreen extends React.Component {
             title: 'Cities',
             headerRight: (
                 <HeaderButtons HeaderButtonComponent={IoniconsHeaderButton}>}>
-                    <HeaderButtons.Item title="search" iconName="ios-add" color="blue" onPress={() => navigation.navigate('MyModal')}/>
+                    <HeaderButtons.Item title="search" iconName="ios-add" color="blue" onPress={() => navigation.navigate('MyModal', { setCities: navigation.getParam('setCities')})}/>
                 </HeaderButtons>
             )
         }
     }
 
     componentDidMount() {
+        console.log('====================================');
+        console.log('Component did mount home screen ');
+        console.log('====================================');
         this.props.navigation.setParams({ increaseCount: this._increaseCount })
+        this.props.navigation.setParams({ setCities: this.setCities })
+
     }
 
-    state = {
-        count: 0,
-    }
+    // state = {
+    //     count: 0,
+    // }
 
     _increaseCount = () => {
         this.setState({ count: this.state.count + 1 })
     }
 
+    setCities = cities => {
+        console.log('====================================');
+        console.log('Set cities method called');
+        console.log('====================================');
+        this.setState({
+            isLoading: false,
+            datasource: cities
+        })
+    }
+
     render() {
+        console.log('====================================');
+        console.log('Home Screen:');
+        console.log('====================================');
         return (
             <View style={styles.container}>
                 <FetchedMovies navigation={this.props.navigation} />

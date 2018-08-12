@@ -9,13 +9,13 @@ export default class FetchedMovies extends React.Component {
         super(props)
         this.state = { 
            isLoading: true,
-           activeRow: null
+           activeRow: null,
         }
     }
 
     // componentDidMount() {
     //     return fetch('https://facebook.github.io/react-native/movies.json')
-    //         .then(response => response.json())
+            // .then(response => response.json())
     //         .then(responseJson => {
     //             this.setState({
     //                 isLoading: false,
@@ -25,12 +25,35 @@ export default class FetchedMovies extends React.Component {
     //         .catch(error => console.error(error))
 
     // }
-    componentDidMount() {
-        this.fetchData()
 
+    componentDidMount() {
+        this.props.navigation.setParams({setCities: this.setCities})
+        console.log('====================================');
+        console.log('FetchedMovies ');
+        console.log('====================================');
+        this.fetchData()
+    }
+
+    onDeletePress(item) {
+        console.log('====================================');
+        console.log('Delete pressed');
+        console.log('====================================');
+
+        fetch(`http://cities.jonkri.se/${item.id}`, {
+            method: 'DELETE'
+        })
+        .then(response => {
+            response.json()
+        })
+        .then(() => {
+            this.fetchData()
+        })
     }
 
     async fetchData() {
+        console.log('====================================');
+        console.log('Fetching data');
+        console.log('====================================');
         try {
             let response = await fetch('http://cities.jonkri.se')
             let responseJson = await response.json()
@@ -43,7 +66,6 @@ export default class FetchedMovies extends React.Component {
             console.log(error);
             console.log('====================================');
         }
-
     }
 
     onRefresh() {
@@ -67,16 +89,21 @@ export default class FetchedMovies extends React.Component {
         console.log(item.name);
         console.log('====================================');
         this.setState({
-            activeRow: item.id
+            activeRow: item.id,
         })
     }
 
     onSwipeClose(item, rowId, direction) {
         if(item.id === this.state.activeRow && typeof direction !==  'undefined') {
             this.setState({
-                activeRow: null
+                // activeRow: null
+                activeRow: item.id
             })
         }
+    }
+
+    setCities = (datasource) => {
+        this.setState({ dataSource })
     }
 
     renderItem(item, index) {
@@ -88,10 +115,12 @@ export default class FetchedMovies extends React.Component {
                     close={item.id !== this.state.activeRow}
                     right={[
                     { text: 'Edit', type: 'primary', onPress: () => console.log(`Edit item id: ${item.id}`)},
-                    { text: 'Delete', type: 'delete', onPress: () => console.log(`Delete item id: ${item.id}`)}
+                    { text: 'Delete', type: 'delete', onPress: () => this.onDeletePress(item) }
                     ]}
                     onOpen={(secId, rowId, direction) => this.onSwipeOpen(item)}
-                    onClose={(secId, rowId, direction) => this.onSwipeClose(item, rowId, direction)}
+                    onClose={(secId, rowId, direction) => {
+                        this.onSwipeClose(item, rowId, direction)
+                    }}
             > 
                 <TouchableHighlight onPress={() => this.onPress(item)} underlayColor="lightgray">
                 <ListItem 
@@ -128,6 +157,7 @@ export default class FetchedMovies extends React.Component {
                     onRefresh={()=>this.onRefresh()}
                     refreshing={this.state.isLoading}
                     data={this.state.dataSource}
+                    extraData={this.state.activeRow}
                     renderItem={({item, index}) => (
                         this.renderItem(item, index)
                     )}
