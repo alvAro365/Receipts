@@ -1,5 +1,6 @@
 import React from 'react'
 import { Alert,
+     ActivityIndicator,
      StyleSheet,
      Button, 
      Text, 
@@ -31,46 +32,99 @@ export default class HomeScreen extends React.Component {
             title: 'Cities',
             headerRight: (
                 <HeaderButtons HeaderButtonComponent={IoniconsHeaderButton}>}>
-                    <HeaderButtons.Item title="search" iconName="ios-add" color="blue" onPress={() => navigation.navigate('MyModal', { setCities: navigation.getParam('setCities')})}/>
+                    <HeaderButtons.Item title="search" iconName="ios-add" color="blue" onPress={() => navigation.navigate('MyModal', { refresh: navigation.getParam('onRefresh')})}/>
                 </HeaderButtons>
             )
         }
     }
 
+    constructor(props) {
+        super(props)
+        this.state = { 
+           isLoading: true,
+           activeRow: null,
+           datasource: null
+        }
+    }
+
     componentDidMount() {
-        console.log('====================================');
-        console.log('Component did mount home screen ');
-        console.log('====================================');
-        this.props.navigation.setParams({ increaseCount: this._increaseCount })
-        this.props.navigation.setParams({ setCities: this.setCities })
+        // this.props.navigation.setParams({ increaseCount: this.increaseCount })
+        this.props.navigation.setParams({ onRefresh: this.onRefresh })
+        this.fetchData()
 
     }
 
-    // state = {
-    //     count: 0,
-    // }
+    async fetchData() {
+        console.log('====================================');
+        console.log('Fetching data Home Screen');
+        console.log('====================================');
+        try {
+            let response = await fetch('http://cities.jonkri.se')
+            let responseJson = await response.json()
+            this.setState({
+                    isLoading: false,
+                    datasource: responseJson
+                })
+        } catch (error) {
+            console.log('====================================');
+            console.log(error);
+            console.log('====================================');
+        }
+        console.log(this.state)
+    }
 
-    _increaseCount = () => {
+    increaseCount = () => {
         this.setState({ count: this.state.count + 1 })
     }
 
-    setCities = cities => {
-        console.log('====================================');
-        console.log('Set cities method called');
-        console.log('====================================');
+    onRefresh = () => {
+        console.log('Refreshing');
         this.setState({
-            isLoading: false,
-            datasource: cities
+            isLoading: true
+        }, () => (
+            this.fetchData()
+        ))
+    }
+    onPress = (item) => {
+        console.log('====================================');
+        console.log('onPress:' + item.name);
+        console.log('====================================');
+        this.props.navigation.navigate('Details', { title: item.name, id: item.id, population: item.population})
+    }
+
+    onDeletePress = (item) => {
+        console.log('====================================');
+        console.log('Delete pressed: ' + item);
+        console.log('====================================');
+
+        fetch(`http://cities.jonkri.se/${item}`, {
+            method: 'DELETE'
+        })
+        .then(response => {
+            response.json()
+        })
+        .then(() => {
+            this.fetchData()
         })
     }
 
     render() {
-        console.log('====================================');
-        console.log('Home Screen:');
-        console.log('====================================');
+        // if(this.state.isLoading) {
+        //     return(
+        //         <View style={{flex: 1, padding: 20}}>
+        //             <ActivityIndicator />
+        //         </View>
+        //     )
+        // }
         return (
             <View style={styles.container}>
-                <FetchedMovies navigation={this.props.navigation} />
+                { !this.state.isLoading && <FetchedMovies navigation={this.props.navigation } 
+                datasource={this.state.datasource} 
+                isLoading={this.state.isLoading}
+                onDeletePress={this.onDeletePress}
+                onRefresh={this.onRefresh}
+
+                /> }
                 {/* <Button 
                     title="Go to Details"
                     onPress={() => this.props.navigation.navigate('Details', {

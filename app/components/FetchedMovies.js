@@ -8,7 +8,6 @@ export default class FetchedMovies extends React.Component {
     constructor(props) {
         super(props)
         this.state = { 
-           isLoading: true,
            activeRow: null,
         }
     }
@@ -26,57 +25,51 @@ export default class FetchedMovies extends React.Component {
 
     // }
 
-    componentDidMount() {
-        this.props.navigation.setParams({setCities: this.setCities})
-        console.log('====================================');
-        console.log('FetchedMovies ');
-        console.log('====================================');
-        this.fetchData()
-    }
 
-    onDeletePress(item) {
-        console.log('====================================');
-        console.log('Delete pressed');
-        console.log('====================================');
+    // onDeletePress(item) {
+    //     console.log('====================================');
+    //     console.log('Delete pressed');
+    //     console.log('====================================');
 
-        fetch(`http://cities.jonkri.se/${item.id}`, {
-            method: 'DELETE'
-        })
-        .then(response => {
-            response.json()
-        })
-        .then(() => {
-            this.fetchData()
-        })
-    }
+    //     fetch(`http://cities.jonkri.se/${item.id}`, {
+    //         method: 'DELETE'
+    //     })
+    //     .then(response => {
+    //         response.json()
+    //     })
+    //     .then(() => {
+    //         this.fetchData()
+    //     })
+    // }
 
-    async fetchData() {
-        console.log('====================================');
-        console.log('Fetching data');
-        console.log('====================================');
-        try {
-            let response = await fetch('http://cities.jonkri.se')
-            let responseJson = await response.json()
-            this.setState({
-                    isLoading: false,
-                    dataSource: responseJson
-                })
-        } catch (error) {
-            console.log('====================================');
-            console.log(error);
-            console.log('====================================');
-        }
-    }
+    // async fetchData() {
+    //     console.log('====================================');
+    //     console.log('Fetching data');
+    //     console.log('====================================');
+    //     try {
+    //         let response = await fetch('http://cities.jonkri.se')
+    //         let responseJson = await response.json()
+    //         this.setState({
+    //                 isLoading: false,
+    //                 dataSource: responseJson
+    //             })
+    //     } catch (error) {
+    //         console.log('====================================');
+    //         console.log(error);
+    //         console.log('====================================');
+    //     }
+    // }
 
-    onRefresh() {
-        console.log('Refreshing');
+    // onRefresh() {
+    //     console.log('Refreshing');
         
-        this.setState({
-            isLoading: true
-        }, () => (
-            this.fetchData()
-        ))
-    }
+    //     this.setState({
+    //         isLoading: true
+    //     }, () => (
+    //         this.fetchData()
+    //     ))
+    // }
+
     onPress(item) {
         console.log('====================================');
         console.log('onPress:' + item.name);
@@ -96,14 +89,9 @@ export default class FetchedMovies extends React.Component {
     onSwipeClose(item, rowId, direction) {
         if(item.id === this.state.activeRow && typeof direction !==  'undefined') {
             this.setState({
-                // activeRow: null
                 activeRow: item.id
             })
         }
-    }
-
-    setCities = (datasource) => {
-        this.setState({ dataSource })
     }
 
     renderItem(item, index) {
@@ -115,7 +103,7 @@ export default class FetchedMovies extends React.Component {
                     close={item.id !== this.state.activeRow}
                     right={[
                     { text: 'Edit', type: 'primary', onPress: () => console.log(`Edit item id: ${item.id}`)},
-                    { text: 'Delete', type: 'delete', onPress: () => this.onDeletePress(item) }
+                    { text: 'Delete', type: 'delete', onPress: () => this.props.onDeletePress(this.state.activeRow) }
                     ]}
                     onOpen={(secId, rowId, direction) => this.onSwipeOpen(item)}
                     onClose={(secId, rowId, direction) => {
@@ -136,13 +124,13 @@ export default class FetchedMovies extends React.Component {
     } 
     
     render() {
-        if(this.state.isLoading) {
-            return(
-                <View style={{flex: 1, padding: 20}}>
-                    <ActivityIndicator />
-                </View>
-            )
-        }
+        // if(this.state.isLoading) {
+        //     return(
+        //         <View style={{flex: 1, padding: 20}}>
+        //             <ActivityIndicator />
+        //         </View>
+        //     )
+        // }
 
         return (
             <View style={{flex: 1, paddingTop:0, width: '100%'}}>
@@ -154,9 +142,9 @@ export default class FetchedMovies extends React.Component {
                         }} />
                     )
                     }
-                    onRefresh={()=>this.onRefresh()}
-                    refreshing={this.state.isLoading}
-                    data={this.state.dataSource}
+                    onRefresh={this.props.onRefresh}
+                    refreshing={this.props.isLoading}
+                    data={this.props.datasource}
                     extraData={this.state.activeRow}
                     renderItem={({item, index}) => (
                         this.renderItem(item, index)

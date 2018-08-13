@@ -7,14 +7,9 @@ class InfoScreen extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            // id: null,
             name: null,
             population: null,
         }
-    }
-
-    componentDidMount() {
-
     }
 
     postCity() {
@@ -27,11 +22,12 @@ class InfoScreen extends Component {
         })
         .then( response => response.json())
         .then( result => {
-            this.props.navigation.state.params.setCities()
-           
             console.log('====================================');
             console.log(result);
             console.log('====================================');
+            const refresh = this.props.navigation.getParam('refresh')
+            refresh()
+
         })
     }
 
@@ -51,11 +47,9 @@ class InfoScreen extends Component {
             <Button 
                 onPress={() => {
                     console.log(this.state)
-                    this.postCity() 
-                    
-                    this.props.navigation.navigate('Cities', {
-                        datasource: this.state.cities
-                    })
+                    this.postCity()
+                    this.props.navigation.navigate('Cities')
+
                     }}
                 disabled={ (this.state.name && this.state.population) ? false : true }
                 title="Add"
