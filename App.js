@@ -9,6 +9,7 @@ export default class App extends React.Component {
 
   setCities = cities => this.setState({ cities }, console.log('City added'))
   render() {
+    console.disableYellowBox = true
     const propsForTheScreen = { setCities: this.setCities, cities: this.state.cities }
     return <RootStack screenProps = { propsForTheScreen }/> 
   }

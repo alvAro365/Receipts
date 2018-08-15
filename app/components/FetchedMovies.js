@@ -102,7 +102,7 @@ export default class FetchedMovies extends React.Component {
             <Swipeout autoClose
                     close={item.id !== this.state.activeRow}
                     right={[
-                    { text: 'Edit', type: 'primary', onPress: () => console.log(`Edit item id: ${item.id}`)},
+                    { text: 'Edit', type: 'primary', onPress: () => this.props.navigation.navigate('MyModal', { item, mode: 'update' }) },
                     { text: 'Delete', type: 'delete', onPress: () => this.props.onDeletePress(this.state.activeRow) }
                     ]}
                     onOpen={(secId, rowId, direction) => this.onSwipeOpen(item)}

@@ -32,7 +32,16 @@ export default class HomeScreen extends React.Component {
             title: 'Cities',
             headerRight: (
                 <HeaderButtons HeaderButtonComponent={IoniconsHeaderButton}>}>
-                    <HeaderButtons.Item title="search" iconName="ios-add" color="blue" onPress={() => navigation.navigate('MyModal', { refresh: navigation.getParam('onRefresh')})}/>
+                    <HeaderButtons.Item title="search" iconName="ios-add" 
+                    color="blue" onPress={
+                        () => navigation.navigate('MyModal', 
+                        {
+                            mode: 'add',
+                            refresh: navigation.getParam('onRefresh'), 
+                            item: 'undefined' 
+                        }) 
+                    }
+                    />
                 </HeaderButtons>
             )
         }

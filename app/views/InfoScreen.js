@@ -9,6 +9,31 @@ class InfoScreen extends Component {
         this.state = {
             name: null,
             population: null,
+            editMode: false,
+            addMode: false
+        }
+    }
+
+    componentDidMount() {
+
+        const item = this.props.navigation.getParam('item')
+        const mode = this.props.navigation.getParam('mode')
+
+        // console.log(item, mode)
+        console.log('====================================');
+        console.log(`Info screen ${item.name}: ${item.population}, Mode: ${mode}`);
+        console.log('====================================');
+
+        if (item !== 'undefined' && mode === 'update') {
+            this.setState({
+                name: item.name,
+                population: item.population.toString(),
+                editMode: !this.state.editMode
+            })
+        } else {
+            this.setState({
+                addMode: !this.state.addMode
+            })
         }
     }
 
@@ -32,15 +57,27 @@ class InfoScreen extends Component {
     }
 
     render() {
+        const item = this.props.navigation.getParam('item')
+        const mode = this.props.navigation.getParam('mode')
+        let isDisabled;
+
+        if (this.state.addMode) {
+            isDisabled = (this.state.name && this.state.population ) ? false : true
+        }
+        else if (this.state.editMode) {
+            isDisabled = ((this.state.name === item.name) && (this.state.population === item.population.toString())) ? true : false
+        }
         return (
            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
             {/* <Text style={{ fontSize: 30}}>This is a modal!</Text> */}
-            <Input 
+            <Input
+                value={this.state.name}
                 placeholder='CITY'
                 onChangeText={input => this.setState({ name: input}) }
 
             />
             <Input 
+                value={this.state.population}
                 placeholder='POPULATION'
                 onChangeText={ input => this.setState({ population: input }) }
             />
@@ -51,8 +88,9 @@ class InfoScreen extends Component {
                     this.props.navigation.navigate('Cities')
 
                     }}
-                disabled={ (this.state.name && this.state.population) ? false : true }
-                title="Add"
+                // disabled={ (this.state.name && this.state.population ) ? false : true }
+                disabled={isDisabled}
+                title= { this.state.editMode ? 'Update' : 'Add' }
             />
             <Button 
                 onPress={() => this.props.navigation.goBack()}
