@@ -2,7 +2,7 @@ import React from 'react'
 import { FlatList, ActivityIndicator, Text, TouchableHighlight, TouchableOpacity, View } from 'react-native'
 import Swipeout from 'react-native-swipeout';
 import { ListItem } from 'react-native-elements';
-import { Icon, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'
+// import { Icon, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'
 
 export default class FetchedMovies extends React.Component {
     constructor(props) {

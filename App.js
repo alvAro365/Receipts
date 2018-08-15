@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native'
 import { RootStack } from './app/components/Navigators';
+// import app from 'server'
 
 export default class App extends React.Component {
   state = {

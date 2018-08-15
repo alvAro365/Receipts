@@ -14,7 +14,9 @@ import ScrollerView from '../components/Scroller'
 import List from '../components/List'
 import FetchedMovies from '../components/FetchedMovies'
 import ImageTitle from '../components/ImageTitle';
-import { Icon, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'
+// import { Icon, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'
+// import Ionicons from "react-native-vector-icons/Ionicons"
+// import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
 import HeaderButtons, { HeaderButton } from 'react-navigation-header-buttons';
 
 
@@ -31,18 +33,30 @@ export default class HomeScreen extends React.Component {
             // headerTitle: <MaterialCommunityIcons name="city" size={40} color="#fff" />,
             title: 'Cities',
             headerRight: (
-                <HeaderButtons HeaderButtonComponent={IoniconsHeaderButton}>}>
-                    <HeaderButtons.Item title="search" iconName="ios-add" 
-                    color="blue" onPress={
-                        () => navigation.navigate('MyModal', 
-                        {
-                            mode: 'add',
-                            refresh: navigation.getParam('onRefresh'), 
-                            item: 'undefined' 
-                        }) 
-                    }
-                    />
-                </HeaderButtons>
+                // <HeaderButtons HeaderButtonComponent={IoniconsHeaderButton}>}>
+                //     <HeaderButtons.Item title="search" iconName="ios-add" 
+                //     color="blue" onPress={
+                //         () => navigation.navigate('MyModal', 
+                //         {
+                //             mode: 'add',
+                //             refresh: navigation.getParam('onRefresh'), 
+                //             item: 'undefined' 
+                //         }) 
+                //     }
+                //     />
+
+                // </HeaderButtons>
+                <Button 
+                    onPress={ () => navigation.navigate('MyModal', 
+                    {
+                        mode: 'add',
+                        refresh: navigation.getParam('onRefresh'),
+                        item: 'undefined'
+
+                    })}
+                    title="Add"
+                    color="blue"
+                />
             )
         }
     }
