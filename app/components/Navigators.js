@@ -70,20 +70,21 @@ const TabNavigator = createBottomTabNavigator({
             headerStyle: {
                 backgroundColor: '#f4511e'
             },
-            // tabBarIcon: ({ focused, tintColor }) => {
-            //     const { routeName } = navigation.state
-            //     let iconName
-            //     if (routeName === 'Cities') {
+            tabBarIcon: ({ focused, tintColor }) => {
+                const { routeName } = navigation.state
+                let iconName
+                if (routeName === 'Cities') {
                     
-            //         // iconName = `ios-home${focused ? '' : '-outline'}`
-            //         iconName = "city"
-            //         return <MaterialCommunityIcons name={iconName} size={25} color={tintColor} />
-            //     } else if (routeName === 'Settings') {
-            //         iconName = `ios-settings${focused ? '' : '-outline'}`
-            //         return <Ionicons name={iconName} size={25} color={tintColor} />
-            //     }
+                    // iconName = `ios-home${focused ? '' : '-outline'}`
+                    iconName = "city"
+                    return <MaterialCommunityIcons name={iconName} size={25} color={tintColor} />
+                } else if (routeName === 'Settings') {
+                    // iconName = `ios-settings${focused ? '' : '-outline'}`
+                    iconName = "ios-settings"
+                    return <Ionicons name={iconName} size={25} color={tintColor} />
+                }
 
-            // }
+            }
 
         }
     )
