@@ -21,7 +21,6 @@ class AddScreen extends Component {
         const item = this.props.navigation.getParam('item')
         const mode = this.props.navigation.getParam('mode')
 
-        // console.log(item, mode)
         console.log('====================================');
         console.log(`Info screen ${item.name}: ${item.category}, Mode: ${mode}`);
         console.log('====================================');

@@ -1,7 +1,9 @@
 import React from 'react'
 import { FlatList, ActivityIndicator, Text, TouchableHighlight, TouchableOpacity, View } from 'react-native'
-import Swipeout from 'react-native-swipeout';
-import { ListItem } from 'react-native-elements';
+import Swipeout from 'react-native-swipeout'
+import { ListItem } from 'react-native-elements'
+import Moment from 'react-moment'
+
 
 export default class List extends React.Component {
     constructor(props) {
@@ -51,9 +53,9 @@ export default class List extends React.Component {
                 <TouchableHighlight onPress={() => this.onPress(item)} underlayColor="lightgray">
                 <ListItem 
                     title={item.name}
-                    subtitle={<Text style={{color: 'gray'}}>Category: {item.category}</Text>}
+                    subtitle={<Text style={{color: 'gray'}}>{item.category}</Text>}
                     leftAvatar={{source: require('./img/no_photo.png') }}
-                    rightTitle="Today"
+                    rightTitle= {<Text style={{color: 'gray', fontSize: 12, textAlign: 'right'}}><Moment element={Text} fromNow date={item.date} /></Text>}
                     // rightSubtitle="Today"
 
                 />
