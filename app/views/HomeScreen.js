@@ -2,27 +2,14 @@ import React from 'react'
 import { Alert,
      ActivityIndicator,
      StyleSheet,
-     Button, 
-     Text, 
-     TouchableHighlight, 
-     TouchableOpacity, 
-     TouchableNativeFeedback, 
-     TouchableWithoutFeedback, 
      View } from 'react-native'
-import { Touchables } from '../components/Touchables'
-import ScrollerView from '../components/Scroller'
 import List from '../components/List'
-import FetchedMovies from '../components/FetchedMovies'
-import ImageTitle from '../components/ImageTitle';
-// import { Icon, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'
 import Ionicons from "react-native-vector-icons/Ionicons"
-// import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
 import HeaderButtons, { HeaderButton } from 'react-navigation-header-buttons';
 
 
 const IoniconsHeaderButton = (props) => (
         <HeaderButton {...props} IconComponent={Ionicons} iconSize={33} />
-
 )
 
 export default class HomeScreen extends React.Component {
@@ -31,7 +18,7 @@ export default class HomeScreen extends React.Component {
 
         return {
             // headerTitle: <MaterialCommunityIcons name="city" size={40} color="#fff" />,
-            title: 'Cities',
+            title: 'Receipts',
             headerRight: (
                 <HeaderButtons HeaderButtonComponent={IoniconsHeaderButton}>}>
                     <HeaderButtons.Item title="search" iconName="ios-add" 
@@ -44,19 +31,7 @@ export default class HomeScreen extends React.Component {
                         }) 
                     }
                     />
-
                 </HeaderButtons>
-                // <Button 
-                //     onPress={ () => navigation.navigate('MyModal', 
-                //     {
-                //         mode: 'add',
-                //         refresh: navigation.getParam('onRefresh'),
-                //         item: 'undefined'
-
-                //     })}
-                //     title="Add"
-                //     color="blue"
-                // />
             )
         }
     }
@@ -71,10 +46,8 @@ export default class HomeScreen extends React.Component {
     }
 
     componentDidMount() {
-        // this.props.navigation.setParams({ increaseCount: this.increaseCount })
         this.props.navigation.setParams({ onRefresh: this.onRefresh })
         this.fetchData()
-
     }
 
     async fetchData() {
@@ -82,8 +55,9 @@ export default class HomeScreen extends React.Component {
         console.log('Fetching data Home Screen');
         console.log('====================================');
         try {
-            let response = await fetch('http://cities.jonkri.se')
+            let response = await fetch('http://localhost:3000/receipts')
             let responseJson = await response.json()
+            console.log(`ResponseJson: ${responseJson}`)
             this.setState({
                     isLoading: false,
                     datasource: responseJson
@@ -93,7 +67,7 @@ export default class HomeScreen extends React.Component {
             console.log(error);
             console.log('====================================');
         }
-        console.log(this.state)
+        console.log('Hei fetch data')
     }
 
     increaseCount = () => {
@@ -112,7 +86,7 @@ export default class HomeScreen extends React.Component {
         console.log('====================================');
         console.log('onPress:' + item.name);
         console.log('====================================');
-        this.props.navigation.navigate('Details', { title: item.name, id: item.id, population: item.population})
+        this.props.navigation.navigate('Details', { title: item.name, id: item.id, category: item.category})
     }
 
     onDeletePress = (item) => {
@@ -120,7 +94,7 @@ export default class HomeScreen extends React.Component {
         console.log('Delete pressed: ' + item);
         console.log('====================================');
 
-        fetch(`http://cities.jonkri.se/${item}`, {
+        fetch(`http://localhost:3000/receipts/delete/${item}`, {
             method: 'DELETE'
         })
         .then(response => {
@@ -141,31 +115,13 @@ export default class HomeScreen extends React.Component {
         // }
         return (
             <View style={styles.container}>
-                { !this.state.isLoading && <FetchedMovies navigation={this.props.navigation } 
+                { !this.state.isLoading && <List navigation={this.props.navigation } 
                 datasource={this.state.datasource} 
                 isLoading={this.state.isLoading}
                 onDeletePress={this.onDeletePress}
                 onRefresh={this.onRefresh}
 
                 /> }
-                {/* <Button 
-                    title="Go to Details"
-                    onPress={() => this.props.navigation.navigate('Details', {
-                        itemId: 88,
-                        otherParam: 'anything here'
-                    })}
-                / */}
-                { 
-                 /*
-                <FetchedMovies />
-                 <List />
-                 <ScrollerView />
-                 <Touchables />
-                 <Button onPress={() => {
-                    Alert.alert('You tapped the button')
-                }}
-                title="Press me"
-                /> */}
             </View>
         )
     }

@@ -1,15 +1,10 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native'
 import HomeScreen from '../views/HomeScreen'
 import { createStackNavigator, createBottomTabNavigator } from 'react-navigation'
 import DetailsScreen from '../views/DetailsScreen'
-import InfoScreen from '../views/InfoScreen'
+import AddScreen from '../views/AddScreen'
 import SettingsScreen from '../views/SettingsScreen'
-
-// import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'
-
 import Ionicons from "react-native-vector-icons/Ionicons"
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
 
 const HomeStack = createStackNavigator(
     {
@@ -55,7 +50,7 @@ const SettingsStack = createStackNavigator(
         }) 
 
 const TabNavigator = createBottomTabNavigator({
-    Cities: {
+    Home: {
         screen: HomeStack
     },
     Settings: {
@@ -63,7 +58,7 @@ const TabNavigator = createBottomTabNavigator({
     }
 }, 
 { 
-    initialRouteName: 'Cities',
+    initialRouteName: 'Home',
     navigationOptions: ({navigation}) => (
         { 
             tabBarVisible: navigation.state.index === 0,
@@ -73,13 +68,11 @@ const TabNavigator = createBottomTabNavigator({
             tabBarIcon: ({ focused, tintColor }) => {
                 const { routeName } = navigation.state
                 let iconName
-                if (routeName === 'Cities') {
+                if (routeName === 'Home') {
                     
-                    // iconName = `ios-home${focused ? '' : '-outline'}`
-                    iconName = "city"
-                    return <MaterialCommunityIcons name={iconName} size={25} color={tintColor} />
+                    iconName = "ios-home"
+                    return <Ionicons name={iconName} size={25} color={tintColor} />
                 } else if (routeName === 'Settings') {
-                    // iconName = `ios-settings${focused ? '' : '-outline'}`
                     iconName = "ios-settings"
                     return <Ionicons name={iconName} size={25} color={tintColor} />
                 }
@@ -92,7 +85,7 @@ const TabNavigator = createBottomTabNavigator({
 
 export const RootStack = createStackNavigator({
     Tabs: TabNavigator,
-    MyModal: InfoScreen
+    MyModal: AddScreen
 }, 
 {
     mode: 'modal',

@@ -1,51 +1,96 @@
 import React from 'react'
-import { StyleSheet, Text, View, FlatList, SectionList } from 'react-native'
+import { FlatList, ActivityIndicator, Text, TouchableHighlight, TouchableOpacity, View } from 'react-native'
+import Swipeout from 'react-native-swipeout';
+import { ListItem } from 'react-native-elements';
 
 export default class List extends React.Component {
-    render() {
+    constructor(props) {
+        super(props)
+        this.state = { 
+           activeRow: null,
+        }
+    }
+
+    onPress(item) {
+        console.log('====================================');
+        console.log('onPress:' + item.name);
+        console.log('====================================');
+        this.props.navigation.navigate('Details', { title: item.name, id: item.id, category: item.category})
+    }
+
+    onSwipeOpen(item) {
+        console.log('====================================');
+        console.log(item.name);
+        console.log('====================================');
+        this.setState({
+            activeRow: item.id,
+        })
+    }
+
+    onSwipeClose(item, rowId, direction) {
+        if(item.id === this.state.activeRow && typeof direction !==  'undefined') {
+            this.setState({
+                activeRow: item.id
+            })
+        }
+    }
+
+    renderItem(item, index) {
         return (
-            <View style={styles.container}>
-                <FlatList 
-                    data={[
-                        {key: 'Alvar'},
-                        {key: 'Pernilla'},
-                        {key: 'Noah'},
-                        {key: 'Malou'},
-                        {key: 'Kadi'},
+            <Swipeout autoClose
+                    close={item.id !== this.state.activeRow}
+                    right={[
+                    { text: 'Edit', type: 'primary', onPress: () => this.props.navigation.navigate('MyModal', { item, mode: 'update' }) },
+                    { text: 'Delete', type: 'delete', onPress: () => this.props.onDeletePress(this.state.activeRow) }
                     ]}
-                    renderItem={({item}) => <Text style={styles.item}>{item.key}</Text>}
+                    onOpen={(secId, rowId, direction) => this.onSwipeOpen(item)}
+                    onClose={(secId, rowId, direction) => {
+                        this.onSwipeClose(item, rowId, direction)
+                    }}
+            > 
+                <TouchableHighlight onPress={() => this.onPress(item)} underlayColor="lightgray">
+                <ListItem 
+                    title={item.name}
+                    subtitle={<Text style={{color: 'gray'}}>Category: {item.category}</Text>}
+                    leftAvatar={{source: require('./img/no_photo.png') }}
+                    rightTitle="Today"
+                    // rightSubtitle="Today"
+
                 />
-                <SectionList 
-                    sections={[
-                        {title: 'D', data: ['Devin']},
-                        {title: 'J', data: ['Jackson', 'James', 'Jillian', 'Jimmy', 'Joel', 'John', 'Julie']},
-                    ]}
-                    renderItem={({item}) => <Text style={styles.item}>{item}</Text>}
-                    renderSectionHeader={({section}) => <Text style={styles.sectionHeader}>{section.title}</Text>}
-                    keyExtractor={(item, index) => index}
+                </TouchableHighlight>
+            </Swipeout>
+        )
+    } 
+    
+    render() {
+        // if(this.state.isLoading) {
+        //     return(
+        //         <View style={{flex: 1, padding: 20}}>
+        //             <ActivityIndicator />
+        //         </View>
+        //     )
+        // }
+
+        return (
+            <View style={{flex: 1, paddingTop:0, width: '100%'}}>
+                <FlatList
+                    ItemSeparatorComponent={() => (
+                        <View style={{
+                            height: 1,
+                            backgroundColor: "#CED0CE"
+                        }} />
+                    )
+                    }
+                    onRefresh={this.props.onRefresh}
+                    refreshing={this.props.isLoading}
+                    data={this.props.datasource}
+                    extraData={this.state.activeRow}
+                    renderItem={({item, index}) => (
+                        this.renderItem(item, index)
+                    )}
+                    keyExtractor={(item, index) => item + index}
                 />
             </View>
         )
     }
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        paddingTop: 22
-    },
-    sectionHeader: {
-        paddingTop: 2,
-        paddingLeft: 10,
-        paddingRight: 10,
-        paddingBottom: 2,
-        fontSize: 14,
-        fontWeight: 'bold',
-        backgroundColor: 'rgba(247,247,247,1.0)',
-      },
-    item: {
-        padding: 10,
-        fontSize: 18,
-        height: 44,
-    }
-})
