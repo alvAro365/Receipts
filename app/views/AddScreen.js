@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { Button, Text, View, CameraRoll, ScrollView, Image } from 'react-native';
-import { Input } from 'react-native-elements';
+import CameraRollPicker from 'react-native-camera-roll-picker'
+import { Input, Avatar } from 'react-native-elements';
 import uuidv4 from 'uuid/v4';
+import Ionicons from "react-native-vector-icons/Ionicons"
 
 class AddScreen extends Component {
     constructor(props) {
@@ -13,12 +15,13 @@ class AddScreen extends Component {
             editMode: false,
             name: null,
             photos: null,
-            isLoading: true
+            isLoading: true,
+            selectedPhotos: []
         }
     }
 
     componentDidMount() {
-        this.loadImages()
+        // this.loadImages()
         const item = this.props.navigation.getParam('item')
         const mode = this.props.navigation.getParam('mode')
         const refresh = this.props.navigation.getParam('refresh')
@@ -41,6 +44,12 @@ class AddScreen extends Component {
                 id: uuidv4()
             })
         }
+    }
+
+    getSelectedImages = (images, current) => {
+        this.setState({
+            selectedPhotos: images
+        })
     }
 
     loadImages = () => {
@@ -128,7 +137,18 @@ class AddScreen extends Component {
                     )
                 }))
             }
+
+            {/* <CameraRollPicker 
+                callback={this.getSelectedImages}
+            /> */}
             {/* <Text style={{ fontSize: 30}}>This is a modal!</Text> */}
+            <Avatar 
+                size="xlarge"
+                rounded
+                icon={{ name: 'image'}}
+                onPress={() => console.log('works')}
+                activeOpacity={0.7}
+            />
             <Input
                 value={this.state.name}
                 placeholder='NAME'

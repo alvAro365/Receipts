@@ -3,6 +3,9 @@ import { FlatList, ActivityIndicator, Text, TouchableHighlight, TouchableOpacity
 import Swipeout from 'react-native-swipeout'
 import { ListItem } from 'react-native-elements'
 import Moment from 'react-moment'
+import Ionicons from "react-native-vector-icons/Ionicons"
+
+const listIcon = <Ionicons name='ios-home' />
 
 export default class List extends React.Component {
     constructor(props) {
@@ -53,7 +56,8 @@ export default class List extends React.Component {
                 <ListItem 
                     title={item.name}
                     subtitle={<Text style={{color: 'gray'}}>{item.category}</Text>}
-                    leftAvatar={{source: require('./img/no_photo.png') }}
+                    // leftAvatar={{source: require('./img/no_photo.png') }}
+                    leftIcon={{ name: 'image', containerStyle: {backgroundColor: 'lightgray', padding: 10, borderRadius: 20 } }}
                     rightTitle= {<Text style={{color: 'gray', fontSize: 12, textAlign: 'right'}}><Moment element={Text} fromNow date={item.date} /></Text>}
                 />
                 </TouchableHighlight>

@@ -1,5 +1,6 @@
 import React from 'react'
 import { View, Text, Button, Image } from 'react-native';
+import { Avatar } from 'react-native-elements';
 
 class DetailsScreen extends React.Component {
 
@@ -17,7 +18,13 @@ class DetailsScreen extends React.Component {
 
         return (
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-                <Image style={{ width: 100, height: 100 }} source={require('../components/img/no_photo.png')}/>
+                {/* <Image style={{ width: 100, height: 100 }} source={require('../components/img/no_photo.png')}/> */}
+                <Avatar 
+                    size={300}
+                    rounded
+                    icon={{name: "photo"}}
+                    onPress={() => console.log("Works")}
+                />
             </View>
         );
     }
