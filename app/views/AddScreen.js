@@ -10,7 +10,6 @@ class AddScreen extends Component {
             addMode: false,
             id: null,
             category: null,
-            date: null,
             editMode: false,
             name: null,
         }
@@ -20,27 +19,31 @@ class AddScreen extends Component {
 
         const item = this.props.navigation.getParam('item')
         const mode = this.props.navigation.getParam('mode')
+        const refresh = this.props.navigation.getParam('refresh')
+        const editMode = this.state.editMode
 
-        console.log('====================================');
-        console.log(`Info screen ${item.name}: ${item.category}, Mode: ${mode}`);
-        console.log('====================================');
+        // console.log('====================================');
+        console.log(`Add screen ${item.name}: ${item.category}, Mode: ${mode}, Id: ${item.id}, Refresh: ${refresh}`);
+        // console.log('====================================');
 
         if (item !== 'undefined' && mode === 'update') {
             this.setState({
                 name: item.name,
                 category: item.category,
+                id: item.id,
                 editMode: !this.state.editMode
-            })
+            }, console.log(this.state))
         } else {
             this.setState({
-                addMode: !this.state.addMode
+                addMode: !this.state.addMode,
+                id: uuidv4()
             })
         }
     }
 
-    postCity() {
+    post() {
         const { name, category, id } = this.state
-        console.log(name, category, id)
+        // console.log(name, category, id)
 
         fetch('http://localhost:3000/receipts', {
             body: JSON.stringify({category, id, name, date: new Date() }),
@@ -51,14 +54,34 @@ class AddScreen extends Component {
         })
         .then( response => response.json())
         .then( result => {
-            console.log('====================================');
-            console.log('Post result:  ' + result);
-            console.log('====================================');
+            // console.log('====================================');
+            // console.log('Post result:  ' + result);
+            // console.log('====================================');
             const refresh = this.props.navigation.getParam('refresh')
             refresh()
 
         })
         .catch(error => console.log(error))
+    }
+
+    update() {
+        console.log(`State before update: ${this.state}`)
+        const { name, category, id } = this.state
+        fetch(`http://localhost:3000/receipts/update/${this.state.id}`, {
+            body: JSON.stringify({ category, id, name, date: new Date() }),
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            method: 'PUT'
+        })
+        .then( response => response.json())
+        .then( result => {
+            const refresh = this.props.navigation.getParam('refresh')
+            console.log(typeof(refresh))
+            refresh()
+        })
+        .catch(error => console.log(error))
+
     }
 
     render() {
@@ -82,16 +105,15 @@ class AddScreen extends Component {
 
             />
             <Input 
-                value={this.state.population}
+                value={this.state.category}
                 placeholder='CATEGORY'
-                onChangeText={ input => this.setState({ category: input, id: uuidv4() }) }
+                onChangeText={ input => this.setState({ category: input }) }
             />
             <Button 
                 onPress={() => {
                     console.log(this.state)
-                    this.postCity()
+                    this.state.addMode ? this.post() : this.update()
                     this.props.navigation.navigate('Cities')
-
                     }}
                 // disabled={ (this.state.name && this.state.population ) ? false : true }
                 disabled={isDisabled}

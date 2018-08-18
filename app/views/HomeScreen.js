@@ -51,13 +51,13 @@ export default class HomeScreen extends React.Component {
     }
 
     async fetchData() {
-        console.log('====================================');
-        console.log('Fetching data Home Screen');
-        console.log('====================================');
+        // console.log('====================================');
+        // console.log('Fetching data Home Screen');
+        // console.log('====================================');
         try {
             let response = await fetch('http://localhost:3000/receipts')
             let responseJson = await response.json()
-            console.log(`ResponseJson: ${responseJson}`)
+            // console.log(`ResponseJson: ${responseJson}`)
             this.setState({
                     isLoading: false,
                     datasource: responseJson
@@ -67,7 +67,6 @@ export default class HomeScreen extends React.Component {
             console.log(error);
             console.log('====================================');
         }
-        console.log('Hei fetch data')
     }
 
     increaseCount = () => {
@@ -82,6 +81,7 @@ export default class HomeScreen extends React.Component {
             this.fetchData()
         ))
     }
+    
     onPress = (item) => {
         console.log('====================================');
         console.log('onPress:' + item.name);

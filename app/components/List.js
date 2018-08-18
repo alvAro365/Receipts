@@ -4,7 +4,6 @@ import Swipeout from 'react-native-swipeout'
 import { ListItem } from 'react-native-elements'
 import Moment from 'react-moment'
 
-
 export default class List extends React.Component {
     constructor(props) {
         super(props)
@@ -22,7 +21,7 @@ export default class List extends React.Component {
 
     onSwipeOpen(item) {
         console.log('====================================');
-        console.log(item.name);
+        console.log(`Item: ${item.name}, Id: ${item.id}`);
         console.log('====================================');
         this.setState({
             activeRow: item.id,
@@ -42,7 +41,7 @@ export default class List extends React.Component {
             <Swipeout autoClose
                     close={item.id !== this.state.activeRow}
                     right={[
-                    { text: 'Edit', type: 'primary', onPress: () => this.props.navigation.navigate('MyModal', { item, mode: 'update' }) },
+                    { text: 'Edit', type: 'primary', onPress: () => this.props.navigation.navigate('MyModal', { item, mode: 'update', refresh: this.props.navigation.getParam('onRefresh') }) },
                     { text: 'Delete', type: 'delete', onPress: () => this.props.onDeletePress(this.state.activeRow) }
                     ]}
                     onOpen={(secId, rowId, direction) => this.onSwipeOpen(item)}
@@ -56,8 +55,6 @@ export default class List extends React.Component {
                     subtitle={<Text style={{color: 'gray'}}>{item.category}</Text>}
                     leftAvatar={{source: require('./img/no_photo.png') }}
                     rightTitle= {<Text style={{color: 'gray', fontSize: 12, textAlign: 'right'}}><Moment element={Text} fromNow date={item.date} /></Text>}
-                    // rightSubtitle="Today"
-
                 />
                 </TouchableHighlight>
             </Swipeout>
