@@ -7,6 +7,7 @@
   },
   "scripts": {
     "start": "react-native start",
+    "start-server": "nodemon --exec babel-node backend/server.js --presets es2015",
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "test": "jest"
