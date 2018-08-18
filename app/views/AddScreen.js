@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Text, View } from 'react-native';
+import { Button, Text, View, CameraRoll, ScrollView, Image } from 'react-native';
 import { Input } from 'react-native-elements';
 import uuidv4 from 'uuid/v4';
 
@@ -12,18 +12,20 @@ class AddScreen extends Component {
             category: null,
             editMode: false,
             name: null,
+            photos: null,
+            isLoading: true
         }
     }
 
     componentDidMount() {
-
+        this.loadImages()
         const item = this.props.navigation.getParam('item')
         const mode = this.props.navigation.getParam('mode')
         const refresh = this.props.navigation.getParam('refresh')
         const editMode = this.state.editMode
 
         // console.log('====================================');
-        console.log(`Add screen ${item.name}: ${item.category}, Mode: ${mode}, Id: ${item.id}, Refresh: ${refresh}`);
+        // console.log(`Add screen ${item.name}: ${item.category}, Mode: ${mode}, Id: ${item.id}, Refresh: ${refresh}`);
         // console.log('====================================');
 
         if (item !== 'undefined' && mode === 'update') {
@@ -39,6 +41,21 @@ class AddScreen extends Component {
                 id: uuidv4()
             })
         }
+    }
+
+    loadImages = () => {
+        CameraRoll.getPhotos({
+            first: 1,
+            assetType: 'Photos'
+        })
+        .then(response => {
+            this.setState({ photos: response.edges, isLoading: false })
+        })
+        .catch( err => {
+            console.log('====================================');
+            console.log(`Error loading images ${err}`);
+            console.log('====================================');
+        })
     }
 
     post() {
@@ -97,6 +114,20 @@ class AddScreen extends Component {
         }
         return (
            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+            { !this.state.isLoading &&
+                 this.state.photos.map(((photo, index) => {
+                    return (
+                        <Image  
+                            key={index}
+                            style={{
+                                width: 300,
+                                height: 200
+                            }}
+                            source={{ uri: photo.node.image.uri }}
+                        />
+                    )
+                }))
+            }
             {/* <Text style={{ fontSize: 30}}>This is a modal!</Text> */}
             <Input
                 value={this.state.name}

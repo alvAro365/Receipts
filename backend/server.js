@@ -30,9 +30,8 @@ app.get('/:ID', (request, response) => (
 )
 
 app.put('/receipts/update/:ID', (request, response) => {
-    console.log(request.body)
     db.collection('receipts')
-    .update({ id: request.params.ID }, {
+    .updateMany({ id: request.params.ID }, {
         $set: {
             name: request.body.name,
             category: request.body.category
