@@ -4,6 +4,7 @@ import { createStackNavigator, createBottomTabNavigator } from 'react-navigation
 import DetailsScreen from '../views/DetailsScreen'
 import AddScreen from '../views/AddScreen'
 import SettingsScreen from '../views/SettingsScreen'
+import CameraRollPicker from '../views/CameraRollPicker'
 import Ionicons from "react-native-vector-icons/Ionicons"
 
 const HomeStack = createStackNavigator(
@@ -48,6 +49,20 @@ const SettingsStack = createStackNavigator(
                 } 
             }
         }) 
+const ModalsStack = createStackNavigator(
+    {
+        AddScreen: {
+            screen: AddScreen
+        },
+        CameraRollPicker: {
+            screen: CameraRollPicker
+        }
+    },
+    {
+        mode: 'modal',
+        headerMode: 'none'
+    }
+)
 
 const TabNavigator = createBottomTabNavigator({
     Home: {
@@ -85,10 +100,11 @@ const TabNavigator = createBottomTabNavigator({
 
 export const RootStack = createStackNavigator({
     Tabs: TabNavigator,
-    MyModal: AddScreen
+    MyModal: ModalsStack
 }, 
 {
     mode: 'modal',
     headerMode: 'none',
-})
+}
+)
 

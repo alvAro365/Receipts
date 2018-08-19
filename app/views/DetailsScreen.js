@@ -23,7 +23,6 @@ class DetailsScreen extends React.Component {
                     size={300}
                     rounded
                     icon={{name: "photo"}}
-                    onPress={() => console.log("Works")}
                 />
             </View>
         );

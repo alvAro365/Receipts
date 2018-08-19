@@ -146,7 +146,7 @@ class AddScreen extends Component {
                 size="xlarge"
                 rounded
                 icon={{ name: 'image'}}
-                onPress={() => console.log('works')}
+                onPress={() => this.props.navigation.navigate('CameraRollPicker')}
                 activeOpacity={0.7}
             />
             <Input
@@ -171,7 +171,7 @@ class AddScreen extends Component {
                 title= { this.state.editMode ? 'Update' : 'Add' }
             />
             <Button 
-                onPress={() => this.props.navigation.goBack()}
+                onPress={() => this.props.navigation.navigate('Home')}
                 title="Cancel"
             />
            </View> 
