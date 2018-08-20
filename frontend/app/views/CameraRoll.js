@@ -29,7 +29,7 @@ class CameraRoll extends Component {
         // params.setImage(images)
         this.props.navigation.navigate('AddScreen', { currentImage: current })
         console.log('====================================');
-        // console.log(current);
+        console.log(current.uri);
         console.log('====================================');
         this.setState({
             num: images.length,

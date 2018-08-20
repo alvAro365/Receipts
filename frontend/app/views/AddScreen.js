@@ -46,15 +46,6 @@ class AddScreen extends Component {
                 id: uuidv4()
             })
         }
-
-        // if (image !== 'undefined') {
-        //     console.log('====================================');
-        //     console.log(image.uri);
-        //     console.log('====================================');
-        //     this.setState({
-        //         image
-        //     })
-        // }
     }
 
     getSelectedImages = (images, current) => {
@@ -63,24 +54,8 @@ class AddScreen extends Component {
         })
     }
 
-    // loadImages = () => {
-    //     CameraRoll.getPhotos({
-    //         first: 1,
-    //         assetType: 'Photos'
-    //     })
-    //     .then(response => {
-    //         this.setState({ photos: response.edges, isLoading: false })
-    //     })
-    //     .catch( err => {
-    //         console.log('====================================');
-    //         console.log(`Error loading images ${err}`);
-    //         console.log('====================================');
-    //     })
-    // }
-
     post(imageUri) {
         const { name, category, id } = this.state
-        // console.log(name, category, id)
 
         fetch('http://localhost:3000/receipts', {
             body: JSON.stringify({category, id, name, date: new Date(), imageUri }),
@@ -119,22 +94,14 @@ class AddScreen extends Component {
         .catch(error => console.log(error))
     }
 
-    // setImage = (selectedImage) => {
-    //     console.log('hei')
-    //     this.setState({
-    //         image: selectedImage
-    //     })
-    // }
-
     render() {
         const item = this.props.navigation.getParam('item')
         const mode = this.props.navigation.getParam('mode')
         let image 
-        let imageUri
 
         // console.log('====================================');
         // console.log(`State: ${this.state.image.uri}`);
-        // console.log(`Image: ${item.imageUri}`);
+        console.log(`Image: ${mode}`);
         // console.log(`Image: ${image}, imageUri: ${imageUri}`);
         // console.log('====================================');
 
@@ -145,31 +112,20 @@ class AddScreen extends Component {
             isDisabled = (this.state.name && this.state.category && image ) ? false : true
         }
         else if (this.state.editMode) {
-            isDisabled = ((this.state.name === item.name) && (this.state.category === item.category )) ? true : false
             image = this.props.navigation.getParam('currentImage')
+            if ( image ) {
+                isDisabled = ((this.state.name === item.name) && (this.state.category === item.category && this.state.uri === image.uri)) ? true : false
+
+            } else {
+                isDisabled = ((this.state.name === item.name) && (this.state.category === item.category )) ? true : false
+            }
+            if(image) {
+                console.log(image.uri)
+            }
         }
         return (
            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            {/* { !this.state.isLoading &&
-                this.state.photos.map(((photo, index) => {
-                    return (
-                        <Image  
-                            key={index}
-                            style={{
-                                width: 300,
-                                height: 200
-                            }}
-                            source={{ uri: photo.node.image.uri }}
-                        />
-                    )
-                }))
-            } */}
-
-            {/* <CameraRollPicker 
-                callback={this.getSelectedImages}
-            /> */}
-            {/* <Text style={{ fontSize: 30}}>This is a modal!</Text> */}
-            { image && <Avatar 
+            { image &&  <Avatar 
                 size="xlarge"
                 rounded
                 source={{uri: image.uri}}
@@ -183,7 +139,7 @@ class AddScreen extends Component {
                 onPress={() => this.props.navigation.navigate('CameraRollPicker', { setImage: this.setImage})}
                 activeOpacity={0.7}
             />}
-            {this.state.uri && <Avatar 
+            {(!image && this.state.uri) && <Avatar 
                 size="xlarge"
                 rounded
                 source={{uri: this.state.uri}}
@@ -207,7 +163,6 @@ class AddScreen extends Component {
                     this.state.addMode ? this.post(image.uri) : this.update()
                     this.props.navigation.navigate('Cities')
                     }}
-                // disabled={ (this.state.name && this.state.population ) ? false : true }
                 disabled={isDisabled}
                 title= { this.state.editMode ? 'Update' : 'Add' }
             />
