@@ -15,14 +15,20 @@ class DetailsScreen extends React.Component {
         const id = navigation.getParam('id', 'NO-ID')
         const name = navigation.getParam('title', 'NO-TITLE')
         const category = navigation.getParam('category', 'NO-CATEGORY')
+        const uri = navigation.getParam('uri', 'NO-URI')
 
         return (
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center'}}>
                 {/* <Image style={{ width: 100, height: 100 }} source={require('../components/img/no_photo.png')}/> */}
-                <Avatar 
+                {/* <Avatar 
                     size={300}
                     rounded
                     icon={{name: "photo"}}
+                /> */}
+                <Avatar 
+                    size={300}
+                    rounded
+                    source={{uri: uri}}
                 />
             </View>
         );

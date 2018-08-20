@@ -19,7 +19,7 @@ export default class List extends React.Component {
         console.log('====================================');
         console.log('onPress:' + item.name);
         console.log('====================================');
-        this.props.navigation.navigate('Details', { title: item.name, id: item.id, category: item.category})
+        this.props.navigation.navigate('Details', { title: item.name, id: item.id, category: item.category, uri: item.imageUri})
     }
 
     onSwipeOpen(item) {
@@ -57,7 +57,8 @@ export default class List extends React.Component {
                     title={item.name}
                     subtitle={<Text style={{color: 'gray'}}>{item.category}</Text>}
                     // leftAvatar={{source: require('./img/no_photo.png') }}
-                    leftIcon={{ name: 'image', containerStyle: {backgroundColor: 'lightgray', padding: 10, borderRadius: 20 } }}
+                    leftAvatar={{source: {uri: item.imageUri} }}
+                    // leftIcon={{ name: 'image', containerStyle: {backgroundColor: 'lightgray', padding: 10, borderRadius: 20 } }}
                     rightTitle= {<Text style={{color: 'gray', fontSize: 12, textAlign: 'right'}}><Moment element={Text} fromNow date={item.date} /></Text>}
                 />
                 </TouchableHighlight>

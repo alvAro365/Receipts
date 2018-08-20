@@ -16,7 +16,8 @@ class AddScreen extends Component {
             name: null,
             photos: null,
             isLoading: true,
-            selectedPhotos: []
+            selectedPhotos: [],
+            image: undefined
         }
     }
 
@@ -44,6 +45,16 @@ class AddScreen extends Component {
                 id: uuidv4()
             })
         }
+
+
+        // if (image !== 'undefined') {
+        //     console.log('====================================');
+        //     console.log(image.uri);
+        //     console.log('====================================');
+        //     this.setState({
+        //         image
+        //     })
+        // }
     }
 
     getSelectedImages = (images, current) => {
@@ -67,12 +78,12 @@ class AddScreen extends Component {
         })
     }
 
-    post() {
+    post(imageUri) {
         const { name, category, id } = this.state
         // console.log(name, category, id)
 
         fetch('http://localhost:3000/receipts', {
-            body: JSON.stringify({category, id, name, date: new Date() }),
+            body: JSON.stringify({category, id, name, date: new Date(), imageUri }),
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -103,16 +114,28 @@ class AddScreen extends Component {
         .then( response => response.json())
         .then( result => {
             const refresh = this.props.navigation.getParam('refresh')
-            console.log(typeof(refresh))
+            // console.log(typeof(refresh))
             refresh()
         })
         .catch(error => console.log(error))
 
     }
 
+    setImage = (selectedImage) => {
+        console.log('hei')
+        this.setState({
+            image: selectedImage
+        }, console.log(this.state.image))
+    }
+
     render() {
         const item = this.props.navigation.getParam('item')
         const mode = this.props.navigation.getParam('mode')
+        const image = this.props.navigation.getParam('currentImage')
+        console.log('====================================');
+        // console.log(`State: ${this.state.image.uri}`);
+        // console.log(`Image: ${image.uri}`);
+        console.log('====================================');
         let isDisabled;
 
         if (this.state.addMode) {
@@ -142,13 +165,20 @@ class AddScreen extends Component {
                 callback={this.getSelectedImages}
             /> */}
             {/* <Text style={{ fontSize: 30}}>This is a modal!</Text> */}
-            <Avatar 
+            {image && <Avatar 
                 size="xlarge"
                 rounded
-                icon={{ name: 'image'}}
-                onPress={() => this.props.navigation.navigate('CameraRollPicker')}
+                source={{uri: image.uri}}
+                onPress={() => this.props.navigation.navigate('CameraRollPicker', { setImage: this.setImage})}
                 activeOpacity={0.7}
-            />
+            />}
+            {!image && <Avatar 
+                size="xlarge"
+                rounded
+                icon={{name: 'image'}}
+                onPress={() => this.props.navigation.navigate('CameraRollPicker', { setImage: this.setImage})}
+                activeOpacity={0.7}
+            />}
             <Input
                 value={this.state.name}
                 placeholder='NAME'
@@ -163,7 +193,7 @@ class AddScreen extends Component {
             <Button 
                 onPress={() => {
                     console.log(this.state)
-                    this.state.addMode ? this.post() : this.update()
+                    this.state.addMode ? this.post(image.uri) : this.update()
                     this.props.navigation.navigate('Cities')
                     }}
                 // disabled={ (this.state.name && this.state.population ) ? false : true }
