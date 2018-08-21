@@ -17,7 +17,6 @@ export default class HomeScreen extends React.Component {
         const params = navigation.state.param || {}
 
         return {
-            // headerTitle: <MaterialCommunityIcons name="city" size={40} color="#fff" />,
             title: 'Receipts',
             headerRight: (
                 <HeaderButtons HeaderButtonComponent={IoniconsHeaderButton}>}>
@@ -51,13 +50,9 @@ export default class HomeScreen extends React.Component {
     }
 
     async fetchData() {
-        // console.log('====================================');
-        // console.log('Fetching data Home Screen');
-        // console.log('====================================');
         try {
             let response = await fetch('http://localhost:3000/receipts')
             let responseJson = await response.json()
-            // console.log(`ResponseJson: ${responseJson}`)
             this.setState({
                     isLoading: false,
                     datasource: responseJson

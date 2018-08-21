@@ -47,7 +47,7 @@ export default class List extends React.Component {
                     { text: 'Edit', type: 'primary', onPress: () => this.props.navigation.navigate('MyModal', { item, mode: 'update', refresh: this.props.navigation.getParam('onRefresh') }) },
                     { text: 'Delete', type: 'delete', onPress: () => this.props.onDeletePress(this.state.activeRow) }
                     ]}
-                    onOpen={(secId, rowId, direction) => this.onSwipeOpen(item)}
+                    onOpen={(seId, rowId, direction) => this.onSwipeOpen(item)}
                     onClose={(secId, rowId, direction) => {
                         this.onSwipeClose(item, rowId, direction)
                     }}
@@ -56,9 +56,7 @@ export default class List extends React.Component {
                 <ListItem 
                     title={item.name}
                     subtitle={<Text style={{color: 'gray'}}>{item.category}</Text>}
-                    // leftAvatar={{source: require('./img/no_photo.png') }}
-                    leftAvatar={{source: {uri: item.imageUri} }}
-                    // leftIcon={{ name: 'image', containerStyle: {backgroundColor: 'lightgray', padding: 10, borderRadius: 20 } }}
+                    leftAvatar={{size: 'medium', rounded: false, source: {uri: item.imageUri}}}
                     rightTitle= {<Text style={{color: 'gray', fontSize: 12, textAlign: 'right'}}><Moment element={Text} fromNow date={item.date} /></Text>}
                 />
                 </TouchableHighlight>
