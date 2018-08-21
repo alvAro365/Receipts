@@ -76,11 +76,11 @@ class AddScreen extends Component {
         .catch(error => console.log(error))
     }
 
-    update() {
-        console.log(`State before update: ${this.state}`)
+    update(uri) {
+        console.log(`State before update: ${this.state.uri}`)
         const { name, category, id } = this.state
         fetch(`http://localhost:3000/receipts/update/${this.state.id}`, {
-            body: JSON.stringify({ category, id, name, date: new Date() }),
+            body: JSON.stringify({ category, id, imageUri: uri, name, date: new Date() }),
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -96,16 +96,10 @@ class AddScreen extends Component {
 
     render() {
         const item = this.props.navigation.getParam('item')
-        const mode = this.props.navigation.getParam('mode')
         let image 
-
-        // console.log('====================================');
-        // console.log(`State: ${this.state.image.uri}`);
-        console.log(`Image: ${mode}`);
-        // console.log(`Image: ${image}, imageUri: ${imageUri}`);
-        // console.log('====================================');
-
         let isDisabled;
+
+        // console.log(`Image: ${mode}`);
 
         if (this.state.addMode) {
             image = this.props.navigation.getParam('currentImage')
@@ -160,7 +154,7 @@ class AddScreen extends Component {
             <Button 
                 onPress={() => {
                     console.log(this.state)
-                    this.state.addMode ? this.post(image.uri) : this.update()
+                    this.state.addMode ? this.post(image.uri) : this.update(image.uri)
                     this.props.navigation.navigate('Cities')
                     }}
                 disabled={isDisabled}

@@ -35,7 +35,8 @@ app.put('/receipts/update/:ID', (request, response) => {
     .update({ id: request.params.ID }, {
         $set: {
             name: request.body.name,
-            category: request.body.category
+            category: request.body.category,
+            imageUri: request.body.imageUri
         }
     }, (error, result) => 
         error ? response.send(error) : response.send(result)
