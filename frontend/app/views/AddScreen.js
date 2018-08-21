@@ -118,24 +118,21 @@ class AddScreen extends Component {
             }
         }
         return (
-           <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+           <View style={{ flex: 1, justifyContent: 'space-evenly', alignItems: 'center' }}>
             { image &&  <Avatar 
                 size="xlarge"
-                rounded
                 source={{uri: image.uri}}
                 onPress={() => this.props.navigation.navigate('CameraRollPicker', { setImage: this.setImage})}
                 activeOpacity={0.7}
             />}
             {(!image && !this.state.uri) && <Avatar 
                 size="xlarge"
-                rounded
                 icon={{name: 'image'}}
                 onPress={() => this.props.navigation.navigate('CameraRollPicker', { setImage: this.setImage})}
                 activeOpacity={0.7}
             />}
             {(!image && this.state.uri) && <Avatar 
                 size="xlarge"
-                rounded
                 source={{uri: this.state.uri}}
                 onPress={() => this.props.navigation.navigate('CameraRollPicker', { setImage: this.setImage})}
                 activeOpacity={0.7}
