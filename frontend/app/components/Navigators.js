@@ -9,10 +9,10 @@ import Ionicons from "react-native-vector-icons/Ionicons"
 
 const HomeStack = createStackNavigator(
     {
-        Cities: {
+      Cities: {
       screen: HomeScreen,
     },
-    Details: {
+      Details: {
       screen: DetailsScreen,
     },
   },

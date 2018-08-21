@@ -3,10 +3,10 @@ import { View, Text, Button, Image } from 'react-native';
 import { Avatar } from 'react-native-elements';
 
 class DetailsScreen extends React.Component {
-
     static navigationOptions = ({ navigation }) => {
         return {
-            title: navigation.getParam('title', '')
+            // title: navigation.getParam('title', ''),
+            headerTransparent: true,
         }
     }
     
@@ -18,18 +18,9 @@ class DetailsScreen extends React.Component {
         const uri = navigation.getParam('uri', 'NO-URI')
 
         return (
-            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-                {/* <Image style={{ width: 100, height: 100 }} source={require('../components/img/no_photo.png')}/> */}
-                {/* <Avatar 
-                    size={300}
-                    rounded
-                    icon={{name: "photo"}}
-                /> */}
-                <Avatar 
-                    size={300}
-                    rounded
-                    source={{uri: uri}}
-                />
+            <View style={{ flex: 1, alignItems: 'stretch'}}>
+                <Image style={{ flex: 1}} 
+                source={{uri: uri}}/>
             </View>
         );
     }
