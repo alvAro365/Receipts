@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { Button, View } from 'react-native';
 
-class SettingsScreen extends Component {
+class InfoScreen extends Component {
     static navigationOptions = ({ navigation }) => {
         return (
-            { title : "Settings"}
+            { title : "Info"}
         )
     }
 
@@ -21,4 +21,4 @@ class SettingsScreen extends Component {
     }
 }
 
-export default SettingsScreen;
+export default InfoScreen;

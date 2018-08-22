@@ -3,7 +3,7 @@ import HomeScreen from '../views/HomeScreen'
 import { createStackNavigator, createBottomTabNavigator } from 'react-navigation'
 import DetailsScreen from '../views/DetailsScreen'
 import AddScreen from '../views/AddScreen'
-import SettingsScreen from '../views/SettingsScreen'
+import InfoScreen from '../views/InfoScreen'
 import CameraRoll from '../views/CameraRoll'
 import Ionicons from "react-native-vector-icons/Ionicons"
 
@@ -29,10 +29,10 @@ const HomeStack = createStackNavigator(
     }
   })
 
-const SettingsStack = createStackNavigator(
+const InfoStack = createStackNavigator(
     { 
-        Settings: { 
-            screen: SettingsScreen 
+        InfoScreen: { 
+            screen: InfoScreen 
         }, 
         Details: {
             screen: DetailsScreen 
@@ -68,8 +68,8 @@ const TabNavigator = createBottomTabNavigator({
     Home: {
         screen: HomeStack
     },
-    Settings: {
-        screen: SettingsStack
+    Info: {
+        screen: InfoStack
     }
 }, 
 { 
@@ -87,8 +87,8 @@ const TabNavigator = createBottomTabNavigator({
                     
                     iconName = "ios-home"
                     return <Ionicons name={iconName} size={25} color={tintColor} />
-                } else if (routeName === 'Settings') {
-                    iconName = "ios-settings"
+                } else if (routeName === 'Info') {
+                    iconName = "ios-information-circle-outline"
                     return <Ionicons name={iconName} size={25} color={tintColor} />
                 }
 
