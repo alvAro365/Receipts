@@ -77,19 +77,19 @@ export default class HomeScreen extends React.Component {
         ))
     }
     
-    onPress = (item) => {
+    onPress = (selectedItem) => {
         console.log('====================================');
-        console.log('onPress:' + item.name);
+        console.log('onPress:' + selectedItem.name);
         console.log('====================================');
-        this.props.navigation.navigate('Details', { title: item.name, id: item.id, category: item.category})
+        this.props.navigation.navigate('Details', { title: selectedItem.name, id: selectedItem.id, category: selectedItem.category})
     }
 
-    onDeletePress = (item) => {
+    onDeletePress = (selectedItem) => {
         console.log('====================================');
-        console.log('Delete pressed: ' + item);
+        console.log('Delete pressed: ' + selectedItem);
         console.log('====================================');
 
-        fetch(`http://localhost:3000/receipts/delete/${item}`, {
+        fetch(`http://localhost:3000/receipts/delete/${selectedItem}`, {
             method: 'DELETE'
         })
         .then(response => {

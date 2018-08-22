@@ -15,22 +15,21 @@ class AddScreen extends Component {
             name: null,
             photos: null,
             isLoading: true,
-            selectedPhotos: [],
             image: undefined,
             uri: undefined
         }
     }
 
     componentDidMount() {
-        // this.loadImages()
-        const selectedRowItem = this.props.navigation.getParam('selectedRowItem')
-        const mode = this.props.navigation.getParam('mode')
-        const refresh = this.props.navigation.getParam('refresh')
+        const { selectedRowItem, mode, refresh } = this.props.navigation.state.params
+        // const selectedRowItem = this.props.navigation.getParam('selectedRowItem')
+        // const refresh = this.props.navigation.getParam('refresh')
+        // const mode = this.props.navigation.getParam('mode')
         const editMode = this.state.editMode
 
-        // console.log('====================================');
+        console.log('====================================');
         console.log(`Add screen ${selectedRowItem}: ${selectedRowItem}, Mode: ${mode}, Id: ${selectedRowItem}`);
-        // console.log('====================================');
+        console.log('====================================');
 
         if (selectedRowItem !== 'undefined' && mode === 'update') {
             this.setState({
@@ -46,12 +45,6 @@ class AddScreen extends Component {
                 id: uuidv4()
             })
         }
-    }
-
-    getSelectedImages = (images, current) => {
-        this.setState({
-            selectedPhotos: images
-        })
     }
 
     post(imageUri) {
@@ -102,20 +95,17 @@ class AddScreen extends Component {
 
 
         if (this.state.addMode) {
-            // image = this.props.navigation.getParam('currentImage')
             if(image) {
                 imageUri = image.uri
             }
             isDisabled = (this.state.name && this.state.category && image ) ? false : true
         }
         else if (this.state.editMode) {
-            // image = this.props.navigation.getParam('currentImage')
             if ( image ) {
                 imageUri = image.uri
                 isDisabled = ((this.state.name === selectedRowItem.name) && (this.state.category === selectedRowItem.category && this.state.uri === image.uri)) ? true : false
 
             } else {
-                // image = this.state.uri
                 imageUri = this.state.uri
                 isDisabled = ((this.state.name === selectedRowItem.name) && (this.state.category === selectedRowItem.category )) ? true : false
             }
@@ -153,8 +143,7 @@ class AddScreen extends Component {
             />
             <Button 
                 onPress={() => {
-                    console.log(this.state)
-                    // this.state.addMode ? this.post(image.uri) : this.update(image.uri)
+                    // console.log(this.state)
                     this.state.addMode ? this.post(imageUri) : this.update(imageUri)
                     this.props.navigation.navigate('Cities')
                     }}

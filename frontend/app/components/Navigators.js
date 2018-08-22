@@ -17,12 +17,9 @@ const HomeStack = createStackNavigator(
     },
   },
   {
-    // initialRouteName:'Home',
     navigationOptions: {
           headerStyle: {
-            //   backgroundColor: 'steelblue'
           },
-        //   headerTintColor: '#fff',
           headerTitleStyle: {
               fontWeight: 'bold',
           }
@@ -41,9 +38,7 @@ const InfoStack = createStackNavigator(
     { 
         navigationOptions: { 
             headerStyle: {
-                //  backgroundColor: "steelblue" 
                 }, 
-                // headerTintColor: '#fff',
                 headerTitleStyle: { 
                     fontWeight: 'bold' 
                 } 
