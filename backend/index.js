@@ -12,10 +12,6 @@ MongoClient.connect('mongodb://localhost:27017', function(error, client) {
     } else {
       console.log('Successfully connected to the database!');
         db = client.db('test');
-        // db.collection('receipts').insert({
-        //     id: 1234,
-        //     name: 'Iphone 6'
-        // }, (error, result) => { dokumentet har lagts in, console.log(result)})
     }
   });
 
@@ -30,7 +26,6 @@ app.get('/:ID', (request, response) => (
 )
 
 app.put('/receipts/update/:ID', (request, response) => {
-    console.log(request.body)
     db.collection('receipts')
     .update({ id: request.params.ID }, {
         $set: {
