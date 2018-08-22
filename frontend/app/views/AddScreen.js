@@ -96,21 +96,27 @@ class AddScreen extends Component {
 
     render() {
         const item = this.props.navigation.getParam('item')
-        let image 
+        let image = this.props.navigation.getParam('currentImage')
+        let imageUri
         let isDisabled;
 
-        // console.log(`Image: ${mode}`);
 
         if (this.state.addMode) {
-            image = this.props.navigation.getParam('currentImage')
+            // image = this.props.navigation.getParam('currentImage')
+            if(image) {
+                imageUri = image.uri
+            }
             isDisabled = (this.state.name && this.state.category && image ) ? false : true
         }
         else if (this.state.editMode) {
-            image = this.props.navigation.getParam('currentImage')
+            // image = this.props.navigation.getParam('currentImage')
             if ( image ) {
+                imageUri = image.uri
                 isDisabled = ((this.state.name === item.name) && (this.state.category === item.category && this.state.uri === image.uri)) ? true : false
 
             } else {
+                // image = this.state.uri
+                imageUri = this.state.uri
                 isDisabled = ((this.state.name === item.name) && (this.state.category === item.category )) ? true : false
             }
             if(image) {
@@ -121,7 +127,7 @@ class AddScreen extends Component {
            <View style={{ flex: 1, justifyContent: 'space-evenly', alignItems: 'center' }}>
             { image &&  <Avatar 
                 size="xlarge"
-                source={{uri: image.uri}}
+                source={{uri: imageUri}}
                 onPress={() => this.props.navigation.navigate('CameraRollPicker', { setImage: this.setImage})}
                 activeOpacity={0.7}
             />}
@@ -152,7 +158,7 @@ class AddScreen extends Component {
                 onPress={() => {
                     console.log(this.state)
                     // this.state.addMode ? this.post(image.uri) : this.update(image.uri)
-                    this.state.addMode ? this.post(image.uri) : this.update(this.state.uri)
+                    this.state.addMode ? this.post(imageUri) : this.update(imageUri)
                     this.props.navigation.navigate('Cities')
                     }}
                 disabled={isDisabled}
