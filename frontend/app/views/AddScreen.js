@@ -151,7 +151,8 @@ class AddScreen extends Component {
             <Button 
                 onPress={() => {
                     console.log(this.state)
-                    this.state.addMode ? this.post(image.uri) : this.update(image.uri)
+                    // this.state.addMode ? this.post(image.uri) : this.update(image.uri)
+                    this.state.addMode ? this.post(image.uri) : this.update(this.state.uri)
                     this.props.navigation.navigate('Cities')
                     }}
                 disabled={isDisabled}
