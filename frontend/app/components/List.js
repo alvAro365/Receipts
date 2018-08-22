@@ -1,5 +1,5 @@
 import React from 'react'
-import { FlatList, ActivityIndicator, Text, TouchableHighlight, TouchableOpacity, View } from 'react-native'
+import { FlatList, Text, TouchableHighlight, TouchableOpacity, View } from 'react-native'
 import Swipeout from 'react-native-swipeout'
 import { ListItem } from 'react-native-elements'
 import Moment from 'react-moment'
@@ -65,14 +65,6 @@ export default class List extends React.Component {
     } 
     
     render() {
-        // if(this.state.isLoading) {
-        //     return(
-        //         <View style={{flex: 1, padding: 20}}>
-        //             <ActivityIndicator />
-        //         </View>
-        //     )
-        // }
-
         return (
             <View style={{flex: 1, paddingTop:0, width: '100%'}}>
                 <FlatList

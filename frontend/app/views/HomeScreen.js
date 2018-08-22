@@ -1,7 +1,5 @@
 import React from 'react'
-import { Alert,
-     ActivityIndicator,
-     StyleSheet,
+import { StyleSheet,
      View } from 'react-native'
 import List from '../components/List'
 import Ionicons from "react-native-vector-icons/Ionicons"
@@ -101,13 +99,6 @@ export default class HomeScreen extends React.Component {
     }
 
     render() {
-        // if(this.state.isLoading) {
-        //     return(
-        //         <View style={{flex: 1, padding: 20}}>
-        //             <ActivityIndicator />
-        //         </View>
-        //     )
-        // }
         return (
             <View style={styles.container}>
                 { !this.state.isLoading && <List navigation={this.props.navigation } 

@@ -9,27 +9,22 @@ class AddScreen extends Component {
         super(props)
         this.state = {
             addMode: false,
-            id: null,
             category: null,
             editMode: false,
-            name: null,
-            photos: null,
-            isLoading: true,
+            id: null,
             image: undefined,
+            name: null,
             uri: undefined
         }
     }
 
     componentDidMount() {
         const { selectedRowItem, mode, refresh } = this.props.navigation.state.params
-        // const selectedRowItem = this.props.navigation.getParam('selectedRowItem')
-        // const refresh = this.props.navigation.getParam('refresh')
-        // const mode = this.props.navigation.getParam('mode')
         const editMode = this.state.editMode
 
-        console.log('====================================');
-        console.log(`Add screen ${selectedRowItem}: ${selectedRowItem}, Mode: ${mode}, Id: ${selectedRowItem}`);
-        console.log('====================================');
+        // console.log('====================================');
+        // console.log(`Add screen ${selectedRowItem}: ${selectedRowItem}, Mode: ${mode}, Id: ${selectedRowItem}`);
+        // console.log('====================================');
 
         if (selectedRowItem !== 'undefined' && mode === 'update') {
             this.setState({
