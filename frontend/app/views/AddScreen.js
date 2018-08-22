@@ -23,22 +23,22 @@ class AddScreen extends Component {
 
     componentDidMount() {
         // this.loadImages()
-        const item = this.props.navigation.getParam('item')
+        const selectedRowItem = this.props.navigation.getParam('selectedRowItem')
         const mode = this.props.navigation.getParam('mode')
         const refresh = this.props.navigation.getParam('refresh')
         const editMode = this.state.editMode
 
         // console.log('====================================');
-        console.log(`Add screen ${item.name}: ${item.imageUri}, Mode: ${mode}, Id: ${item.id}`);
+        console.log(`Add screen ${selectedRowItem}: ${selectedRowItem}, Mode: ${mode}, Id: ${selectedRowItem}`);
         // console.log('====================================');
 
-        if (item !== 'undefined' && mode === 'update') {
+        if (selectedRowItem !== 'undefined' && mode === 'update') {
             this.setState({
-                name: item.name,
-                category: item.category,
-                id: item.id,
+                name: selectedRowItem.name,
+                category: selectedRowItem.category,
+                id: selectedRowItem.id,
                 editMode: !this.state.editMode,
-                uri: item.imageUri
+                uri: selectedRowItem.imageUri
             })
         } else {
             this.setState({
@@ -95,10 +95,10 @@ class AddScreen extends Component {
     }
 
     render() {
-        const item = this.props.navigation.getParam('item')
+        const selectedRowItem = this.props.navigation.getParam('selectedRowItem')
         let image = this.props.navigation.getParam('currentImage')
         let imageUri
-        let isDisabled;
+        let isDisabled
 
 
         if (this.state.addMode) {
@@ -112,15 +112,12 @@ class AddScreen extends Component {
             // image = this.props.navigation.getParam('currentImage')
             if ( image ) {
                 imageUri = image.uri
-                isDisabled = ((this.state.name === item.name) && (this.state.category === item.category && this.state.uri === image.uri)) ? true : false
+                isDisabled = ((this.state.name === selectedRowItem.name) && (this.state.category === selectedRowItem.category && this.state.uri === image.uri)) ? true : false
 
             } else {
                 // image = this.state.uri
                 imageUri = this.state.uri
-                isDisabled = ((this.state.name === item.name) && (this.state.category === item.category )) ? true : false
-            }
-            if(image) {
-                console.log(image.uri)
+                isDisabled = ((this.state.name === selectedRowItem.name) && (this.state.category === selectedRowItem.category )) ? true : false
             }
         }
         return (

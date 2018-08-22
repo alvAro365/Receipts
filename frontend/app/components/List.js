@@ -44,7 +44,7 @@ export default class List extends React.Component {
             <Swipeout autoClose
                     close={item.id !== this.state.activeRow}
                     right={[
-                    { text: 'Edit', type: 'primary', onPress: () => this.props.navigation.navigate('MyModal', { item, mode: 'update', refresh: this.props.navigation.getParam('onRefresh') }) },
+                    { text: 'Edit', type: 'primary', onPress: () => this.props.navigation.navigate('MyModal', { selectedRowItem: item, mode: 'update', refresh: this.props.navigation.getParam('onRefresh') }) },
                     { text: 'Delete', type: 'delete', onPress: () => this.props.onDeletePress(this.state.activeRow) }
                     ]}
                     onOpen={(seId, rowId, direction) => this.onSwipeOpen(item)}
