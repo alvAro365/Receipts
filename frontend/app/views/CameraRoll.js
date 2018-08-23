@@ -15,21 +15,10 @@ class CameraRoll extends Component {
         )
     }
 
-    constructor(props) {
-        super(props)
-        this.state = {
-            currentImage: {}
-        }
-    }
-
     getSelectedImages = (images, current) => {
-        this.props.navigation.navigate('AddScreen', { currentImage: current })
-        console.log('====================================');
-        console.log(current.uri);
-        console.log('====================================');
-        this.setState({
-            currentImage: current
-        })
+        this.props.navigation.getParam('setImage')(current.uri)
+        // this.props.navigation.state.params.setImage(current.uri)
+        this.props.navigation.navigate('AddScreen')
     }
 
     render() {

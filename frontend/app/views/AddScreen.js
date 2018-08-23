@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
-import { Button, Text, View, CameraRoll, ScrollView, Image } from 'react-native'
-import CameraRollPicker from 'react-native-camera-roll-picker'
+import { Button, View } from 'react-native'
 import { Input, Avatar } from 'react-native-elements'
 import uuidv4 from 'uuid/v4'
 
@@ -12,16 +11,16 @@ class AddScreen extends Component {
             category: null,
             editMode: false,
             id: null,
-            image: undefined,
+            isButtonDisabled: true,
             name: null,
-            uri: undefined
+            uri: undefined,
+            previousUri: undefined,
+
         }
     }
 
     componentDidMount() {
-        const { selectedRowItem, mode, refresh } = this.props.navigation.state.params
-        const editMode = this.state.editMode
-
+        const { selectedRowItem, mode } = this.props.navigation.state.params
         // console.log('====================================');
         // console.log(`Add screen ${selectedRowItem}: ${selectedRowItem}, Mode: ${mode}, Id: ${selectedRowItem}`);
         // console.log('====================================');
@@ -32,7 +31,8 @@ class AddScreen extends Component {
                 category: selectedRowItem.category,
                 id: selectedRowItem.id,
                 editMode: !this.state.editMode,
-                uri: selectedRowItem.imageUri
+                uri: selectedRowItem.imageUri,
+                previousUri: undefined
             })
         } else {
             this.setState({
@@ -42,11 +42,28 @@ class AddScreen extends Component {
         }
     }
 
-    post(imageUri) {
-        const { name, category, id } = this.state
+    setAddUpdateVisibility() {
+        if (this.state.name && this.state.category && this.state.uri) {
+            this.setState({
+                isButtonDisabled: false
+            })
+        }
+    }
+
+    setSelectedImage = (selectedUri) => {
+        this.setAddUpdateVisibility()
+        this.setState( prevState => ({
+            uri: selectedUri,
+            previousUri: prevState.uri,
+            isButtonDisabled: false
+        }))
+    }
+
+    post() {
+        const { name, category, id, uri } = this.state
 
         fetch('http://localhost:3000/receipts', {
-            body: JSON.stringify({category, id, name, date: new Date(), imageUri }),
+            body: JSON.stringify({category, id, name, date: new Date(), imageUri: uri }),
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -54,19 +71,14 @@ class AddScreen extends Component {
         })
         .then( response => response.json())
         .then( result => {
-            // console.log('====================================');
-            // console.log('Post result:  ' + result);
-            // console.log('====================================');
-            const refresh = this.props.navigation.getParam('refresh')
-            refresh()
+            this.props.navigation.getParam('refresh')()
 
         })
         .catch(error => console.log(error))
     }
 
-    update(uri) {
-        console.log(`State before update: ${this.state.uri}`)
-        const { name, category, id } = this.state
+    update() {
+        const { name, category, id, uri } = this.state
         fetch(`http://localhost:3000/receipts/update/${this.state.id}`, {
             body: JSON.stringify({ category, id, imageUri: uri, name, date: new Date() }),
             headers: {
@@ -76,73 +88,44 @@ class AddScreen extends Component {
         })
         .then( response => response.json())
         .then( result => {
-            const refresh = this.props.navigation.getParam('refresh')
-            refresh()
+            this.props.navigation.getParam('refresh')()
         })
         .catch(error => console.log(error))
     }
 
     render() {
-        const selectedRowItem = this.props.navigation.getParam('selectedRowItem')
-        let image = this.props.navigation.getParam('currentImage')
-        let imageUri
-        let isDisabled
 
-
-        if (this.state.addMode) {
-            if(image) {
-                imageUri = image.uri
-            }
-            isDisabled = (this.state.name && this.state.category && image ) ? false : true
-        }
-        else if (this.state.editMode) {
-            if ( image ) {
-                imageUri = image.uri
-                isDisabled = ((this.state.name === selectedRowItem.name) && (this.state.category === selectedRowItem.category && this.state.uri === image.uri)) ? true : false
-
-            } else {
-                imageUri = this.state.uri
-                isDisabled = ((this.state.name === selectedRowItem.name) && (this.state.category === selectedRowItem.category )) ? true : false
-            }
-        }
         return (
            <View style={{ flex: 1, justifyContent: 'space-evenly', alignItems: 'center' }}>
-            { image &&  <Avatar 
-                size="xlarge"
-                source={{uri: imageUri}}
-                onPress={() => this.props.navigation.navigate('CameraRollPicker', { setImage: this.setImage})}
-                activeOpacity={0.7}
-            />}
-            {(!image && !this.state.uri) && <Avatar 
-                size="xlarge"
-                icon={{name: 'image'}}
-                onPress={() => this.props.navigation.navigate('CameraRollPicker', { setImage: this.setImage})}
-                activeOpacity={0.7}
-            />}
-            {(!image && this.state.uri) && <Avatar 
+            { this.state.uri &&  <Avatar 
                 size="xlarge"
                 source={{uri: this.state.uri}}
-                onPress={() => this.props.navigation.navigate('CameraRollPicker', { setImage: this.setImage})}
+                onPress={() => this.props.navigation.navigate('CameraRollPicker', { setImage: this.setSelectedImage})}
+                activeOpacity={0.7}
+            />}
+            { !this.state.uri && <Avatar 
+                size="xlarge"
+                icon={{name: 'image'}}
+                onPress={() => this.props.navigation.navigate('CameraRollPicker', { setImage: this.setSelectedImage})}
                 activeOpacity={0.7}
             />}
             <Input
                 value={this.state.name}
                 placeholder='NAME'
-                onChangeText={input => this.setState({ name: input}) }
+                onChangeText={input => this.setState({ name: input, isButtonDisabled: false }) }
 
             />
             <Input 
                 value={this.state.category}
                 placeholder='CATEGORY'
-                onChangeText={ input => this.setState({ category: input }) }
+                onChangeText={ input => this.setState({ category: input, isButtonDisabled: false }) }
             />
             <Button 
                 onPress={() => {
-                    // console.log(this.state)
-                    this.state.addMode ? this.post(imageUri) : this.update(imageUri)
+                    this.state.addMode ? this.post() : this.update()
                     this.props.navigation.navigate('Cities')
                     }}
-                disabled={isDisabled}
+                disabled={ this.state.isButtonDisabled }
                 title= { this.state.editMode ? 'Update' : 'Add' }
             />
             <Button 
