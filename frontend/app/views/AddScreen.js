@@ -14,7 +14,6 @@ class AddScreen extends Component {
             isButtonDisabled: true,
             name: null,
             uri: undefined,
-            previousUri: undefined,
 
         }
     }
@@ -52,11 +51,10 @@ class AddScreen extends Component {
 
     setSelectedImage = (selectedUri) => {
         this.setAddUpdateVisibility()
-        this.setState( prevState => ({
+        this.setState({
             uri: selectedUri,
-            previousUri: prevState.uri,
             isButtonDisabled: false
-        }))
+        })
     }
 
     post() {
@@ -97,15 +95,9 @@ class AddScreen extends Component {
 
         return (
            <View style={{ flex: 1, justifyContent: 'space-evenly', alignItems: 'center' }}>
-            { this.state.uri &&  <Avatar 
+            { <Avatar 
                 size="xlarge"
-                source={{uri: this.state.uri}}
-                onPress={() => this.props.navigation.navigate('CameraRollPicker', { setImage: this.setSelectedImage})}
-                activeOpacity={0.7}
-            />}
-            { !this.state.uri && <Avatar 
-                size="xlarge"
-                icon={{name: 'image'}}
+                {...(this.state.uri ? {source: {uri: this.state.uri}} : {icon: {name: 'image'}} )}
                 onPress={() => this.props.navigation.navigate('CameraRollPicker', { setImage: this.setSelectedImage})}
                 activeOpacity={0.7}
             />}

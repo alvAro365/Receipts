@@ -5,7 +5,6 @@ import { ListItem } from 'react-native-elements'
 import Moment from 'react-moment'
 import Ionicons from "react-native-vector-icons/Ionicons"
 
-const listIcon = <Ionicons name='ios-home' />
 
 export default class List extends React.Component {
     constructor(props) {
