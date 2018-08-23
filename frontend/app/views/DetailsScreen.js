@@ -9,9 +9,28 @@ class DetailsScreen extends React.Component {
             headerTransparent: true,
         }
     }
+
+    constructor(props) {
+        super(props)
+        this.state = {
+            isLoading: true
+        }
+    }
+
+    componentDidMount() {
+        setTimeout(()=> { this.setState({isLoading: false})}, 800)
+    }
     
     render() {
         const { uri } = this.props.navigation.state.params
+
+        if(this.state.isLoading) {
+            return (
+                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+                        <ProgressPie indeterminate />
+                </View>
+            )
+        }
         return (
             <View style={{ flex: 1, alignItems: 'stretch'}}>
                 <Image style={{ flex: 1}} 
